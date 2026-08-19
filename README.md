@@ -25,14 +25,14 @@ castuo-offline-field-operations acts as the **EDGE** layer for human operations,
 ```text
 castuo-offline-field-operations (Edge)
      │
-     ├── CASTÚO-SYSTEM (Core)
+     ├── castuo-evidence (Public Fabric)
+     │      Evidence verification surface
+     │
+     ├── CASTÚO-SYSTEM (Private Core)
      │      Upstream sync target
      │
-     ├── castuo-agro-edge (Edge)
-     │      Related field stack
-     │
-     └── GOLDfish (Assurance)
-            Security & validation gate
+     └── castuo-evolution (Control Plane)
+            Governance & SSOT
 ```
 
 ---
@@ -58,7 +58,7 @@ Every operational event is logged with provenance data for later validation in *
 ---
 
 ## 5. Navigation
-[← Ecosystem Profile](https://github.com/Traky12) | [→ Core Platform](https://github.com/Traky12/Castuo-system) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge) | [→ Governance](https://github.com/Traky12/castuo-evolution)
+[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
 
 ---
 
