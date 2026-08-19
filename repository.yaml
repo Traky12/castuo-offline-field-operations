@@ -1,0 +1,42 @@
+id: CASTUO-REPOSITORY-CASTUO_OFFLINE_FIELD_OPERATIONS
+name: castuo-offline-field-operations
+class: FIELD
+visibility: PUBLIC
+owner: Traky12
+parent_system: CASTUO-SYSTEM
+lifecycle: ACTIVE
+scope: field continuity and synchronisation
+current_state: CANDIDATE
+assurance_level: L0_CONTRACT_DEFINED
+evidence_state: EVIDENCE_PENDING
+production_claim: NOT_CLAIMED
+relationships:
+  upstream: [Castuo-system]
+  downstream: []
+  peers: []
+claims_blocked:
+  - production
+  - certification
+  - independent_validation
+  - autonomous_authority
+  - commercial_validation
+  - federation
+metadata_source: CASTUO-REPOSITORY-STANDARD-V1.0
+repository: castuo-offline-field-operations
+purpose: field continuity and synchronisation
+environment: STAGING
+implementation_state: CANDIDATE
+security_state: EVIDENCE_PENDING
+promotion_state: PROMOTION_BLOCKED
+claims_allowed:
+  - documented repository role within declared scope
+claims_blocked:
+  - production
+  - certification
+  - independent_validation
+  - autonomous_authority
+  - commercial_validation
+  - federation
+dependencies: []
+upstream: [Castuo-system]
+downstream: []
