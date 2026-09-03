@@ -1,0 +1,546 @@
+<title>Protocolo de Integridad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+:root {
+  --paper:#F4F5F2; --surface:#FCFCFA; --sunk:#EBEDE7;
+  --ink:#16211A; --muted:#5F6A61; --rule:#D2D6CF; --rule-soft:#E2E5DE;
+  --accent:#2C5340; --accent-dim:#4A7A5F; --alert:#A33E12; --warn:#7A6420;
+  --sans:"IBM Plex Sans Condensed","Helvetica Neue",Arial,sans-serif;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+  --measure:66ch;
+  --s1:.35rem; --s2:.7rem; --s3:1.1rem; --s4:1.8rem; --s5:2.8rem; --s6:4.4rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#111512; --surface:#181D19; --sunk:#1E241F;
+    --ink:#E5E9E2; --muted:#96A098; --rule:#2E362F; --rule-soft:#242B25;
+    --accent:#86B99B; --accent-dim:#6E9C82; --alert:#E08050; --warn:#C9AC55;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#111512; --surface:#181D19; --sunk:#1E241F;
+  --ink:#E5E9E2; --muted:#96A098; --rule:#2E362F; --rule-soft:#242B25;
+  --accent:#86B99B; --accent-dim:#6E9C82; --alert:#E08050; --warn:#C9AC55;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--serif); font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased; }
+p { margin:0 0 var(--s3); max-width:var(--measure); }
+a { color:var(--accent); text-underline-offset:2px; }
+strong { font-weight:500; }
+code { font-family:var(--mono); font-size:.88em; }
+:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.wrap { max-width:1080px; margin:0 auto; padding:0 var(--s4); }
+
+.masthead { border-bottom:2px solid var(--ink); padding:var(--s5) 0 var(--s4); }
+.eyebrow { font-family:var(--sans); font-size:.72rem; font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); margin:0 0 var(--s3); }
+h1 { font-family:var(--sans); font-weight:700; letter-spacing:-.015em;
+  font-size:clamp(2.1rem,5.2vw,3.4rem); line-height:1; margin:0 0 var(--s2); text-wrap:balance; }
+.deck { font-family:var(--sans); font-size:clamp(1rem,2.1vw,1.28rem); color:var(--muted);
+  max-width:54ch; margin:0 0 var(--s4); }
+.deck b { color:var(--ink); font-weight:600; }
+.meta { display:flex; flex-wrap:wrap; gap:var(--s2) var(--s4);
+  font-family:var(--mono); font-size:.74rem; color:var(--muted); }
+.meta b { font-weight:500; color:var(--ink); }
+
+.legend { margin:var(--s4) 0 0; border:1px solid var(--rule); background:var(--surface); }
+.legend .lh { font-family:var(--sans); font-size:.72rem; font-weight:600; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted); padding:var(--s2) var(--s3);
+  border-bottom:1px solid var(--rule-soft); }
+.legend .rows { display:grid; gap:1px; background:var(--rule-soft); }
+@media (min-width:820px) { .legend .rows { grid-template-columns:repeat(4,1fr); } }
+.legend .r { background:var(--surface); padding:var(--s3); }
+.legend .r p { margin:var(--s1) 0 0; font-size:.86rem; color:var(--muted); max-width:none; }
+
+.badge { font-family:var(--sans); font-size:.66rem; font-weight:600; letter-spacing:.09em;
+  text-transform:uppercase; padding:.12rem .42rem; border:1px solid currentColor;
+  border-radius:2px; white-space:nowrap; display:inline-block; }
+.b-hecho { color:var(--accent); }
+.b-diseno { color:var(--muted); border-style:dashed; }
+.b-audit { color:var(--warn); border-style:dashed; }
+.b-parcial { color:var(--alert); border-style:dotted; }
+.b-no { color:var(--alert); }
+
+.doc { display:grid; grid-template-columns:1fr; }
+@media (min-width:960px) { .doc { grid-template-columns:180px minmax(0,1fr); gap:var(--s6); align-items:start; }
+  .rail { position:sticky; top:var(--s4); padding-top:var(--s5); } }
+.rail { font-family:var(--sans); font-size:.82rem; }
+.rail ol { list-style:none; margin:0; padding:0; display:grid; gap:var(--s2); }
+.rail a { display:block; color:var(--muted); text-decoration:none; line-height:1.25; }
+.rail a:hover { color:var(--accent); }
+.rail .n { font-family:var(--mono); font-size:.7rem; color:var(--accent-dim); display:block; }
+@media (max-width:959px) { .rail { display:none; } }
+
+section { padding:var(--s5) 0 0; }
+section + section { border-top:1px solid var(--rule-soft); }
+.sh { display:flex; gap:var(--s3); align-items:baseline; margin-bottom:var(--s3); flex-wrap:wrap; }
+.sn { font-family:var(--mono); font-size:.76rem; color:var(--paper); background:var(--ink);
+  padding:.16rem .46rem; border-radius:2px; flex:none; }
+h2 { font-family:var(--sans); font-weight:700; font-size:clamp(1.35rem,3vw,1.9rem);
+  line-height:1.08; margin:0; letter-spacing:-.008em; text-wrap:balance; }
+h3 { font-family:var(--sans); font-weight:600; font-size:1.06rem; margin:var(--s4) 0 var(--s2); }
+h4 { font-family:var(--sans); font-weight:600; font-size:.76rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin:var(--s4) 0 var(--s2); }
+
+.split { display:grid; gap:2px; margin:var(--s3) 0 var(--s4); }
+@media (min-width:720px) { .split { grid-template-columns:1fr 1fr; } }
+.split > div { background:var(--surface); border:1px solid var(--rule-soft); padding:var(--s3); }
+.split .in { border-top:3px solid var(--accent); }
+.split .out { border-top:3px solid var(--alert); }
+.split h5 { font-family:var(--sans); font-size:.72rem; letter-spacing:.13em; text-transform:uppercase;
+  margin:0 0 var(--s2); font-weight:600; }
+.split .in h5 { color:var(--accent); }
+.split .out h5 { color:var(--alert); }
+.split ul { margin:0; padding-left:1.1rem; font-size:.93rem; }
+.split li { margin-bottom:.3rem; }
+
+pre { background:var(--sunk); border:1px solid var(--rule-soft); padding:var(--s3);
+  overflow-x:auto; font-family:var(--mono); font-size:.78rem; line-height:1.6; margin:var(--s3) 0; }
+pre .kw { color:var(--accent); font-weight:500; }
+
+.tablewrap { overflow-x:auto; margin:var(--s3) 0 var(--s4); border-bottom:1px solid var(--rule); }
+table { border-collapse:collapse; width:100%; font-size:.9rem; min-width:520px; }
+caption { text-align:left; font-family:var(--sans); font-size:.78rem; color:var(--muted);
+  padding-bottom:var(--s2); }
+th, td { text-align:left; padding:.5rem var(--s3) .5rem 0; vertical-align:top; }
+thead th { font-family:var(--sans); font-size:.69rem; font-weight:600; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--ink); padding-bottom:var(--s1); }
+tbody tr { border-bottom:1px solid var(--rule-soft); }
+tbody tr:last-child { border-bottom:0; }
+td.code, th.code { font-family:var(--mono); font-size:.78rem; white-space:nowrap; }
+
+ol.criteria { counter-reset:c; list-style:none; margin:var(--s3) 0 var(--s4); padding:0;
+  display:grid; gap:1px; background:var(--rule-soft); border:1px solid var(--rule-soft); }
+ol.criteria li { counter-increment:c; background:var(--surface); padding:var(--s2) var(--s3);
+  display:grid; grid-template-columns:2rem 1fr; gap:var(--s2); font-size:.93rem; align-items:baseline; }
+ol.criteria li::before { content:counter(c,decimal-leading-zero); font-family:var(--mono);
+  font-size:.72rem; color:var(--accent-dim); }
+ol.criteria li.open { background:var(--sunk); }
+ol.criteria li.open::before { color:var(--alert); }
+ol.criteria .mark { font-family:var(--mono); font-size:.7rem; color:var(--alert); }
+
+.note { border-left:3px solid var(--warn); background:var(--sunk); padding:var(--s3);
+  margin:var(--s3) 0 var(--s4); font-size:.93rem; }
+.note p { margin:0; max-width:76ch; }
+.note b { font-weight:500; }
+
+.closer { margin:var(--s6) 0 0; border-top:2px solid var(--ink); padding:var(--s4) 0 var(--s6); }
+.closer p { font-family:var(--serif); font-style:italic; font-size:clamp(1.05rem,2.4vw,1.35rem);
+  line-height:1.45; max-width:44ch; margin:0 0 var(--s3); }
+.colophon { font-family:var(--mono); font-size:.7rem; color:var(--muted); line-height:1.7;
+  font-style:normal; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CASTÚO-SYSTEM · Estándar transversal · v0.1</p>
+    <h1>Protocolo de Integridad Técnica</h1>
+    <p class="deck">Inmutabilidad y trazabilidad de registros. Aplica a <b>SUBER UAV</b>
+    (alcornocal y cadena del corcho), a <b>SENDA</b> y a cualquier línea que asiente evidencia
+    sobre el mismo núcleo.</p>
+    <div class="meta">
+      <span><b>Fecha</b> 2 sep 2026</span>
+      <span><b>Criterios</b> 11 de 14 con prueba</span>
+      <span><b>Batería</b> 267 pruebas</span>
+      <span><b>Motor</b> PostgreSQL 16</span>
+    </div>
+
+    <div class="legend">
+      <div class="lh">Cada afirmación de este protocolo lleva uno de estos cuatro estados, y el estado forma parte de la afirmación</div>
+      <div class="rows">
+        <div class="r"><span class="badge b-hecho">hecho probado</span>
+          <p>Implementado, con prueba automatizada que falla si se rompe.</p></div>
+        <div class="r"><span class="badge b-diseno">decisión de diseño</span>
+          <p>Decidido y documentado; ninguna medida lo respalda todavía.</p></div>
+        <div class="r"><span class="badge b-audit">pendiente de auditoría</span>
+          <p>Implementado o decidido, sin verificación de un tercero.</p></div>
+        <div class="r"><span class="badge b-parcial">parcialmente resuelto</span>
+          <p>Una parte construida, otra identificada y abierta.</p></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc">
+    <nav class="rail" aria-label="Índice">
+      <ol>
+        <li><a href="#s1"><span class="n">01</span>Propósito</a></li>
+        <li><a href="#s2"><span class="n">02</span>Alcance</a></li>
+        <li><a href="#s3"><span class="n">03</span>Append-only</a></li>
+        <li><a href="#s4"><span class="n">04</span>Correcciones</a></li>
+        <li><a href="#s5"><span class="n">05</span>Sellado</a></li>
+        <li><a href="#s6"><span class="n">06</span>Auditoría externa</a></li>
+        <li><a href="#s7"><span class="n">07</span>Estado de la evidencia</a></li>
+        <li><a href="#s8"><span class="n">08</span>Soberanía</a></li>
+        <li><a href="#s9"><span class="n">09</span>Riesgos</a></li>
+        <li><a href="#s10"><span class="n">10</span>Criterios</a></li>
+        <li><a href="#s11"><span class="n">11</span>Encaje por línea</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+      <section id="s1">
+        <div class="sh"><span class="sn">01</span><h2>Propósito</h2></div>
+        <p>La gestión de recursos naturales críticos exige pasar de la confianza operativa a la
+        evidencia técnica verificable. Este protocolo define cómo se registra, se corrige, se sella
+        y se exporta un dato para que un tercero pueda comprobar por su cuenta que no ha sido
+        alterado desde su origen.</p>
+        <p>El objetivo no es almacenar información, sino que la historia del dato sea
+        reconstruible, que la alteración silenciosa sea detectable y que la verificación
+        independiente sea posible <strong>sin acceso a los sistemas que lo produjeron</strong>. El
+        núcleo es el mismo en el alcornocal y en la gestión hídrica, y por eso se escribe una vez.</p>
+
+        <div class="split">
+          <div class="in">
+            <h5>Lo que ofrece</h5>
+            <ul>
+              <li>Resistencia a la alteración silenciosa</li>
+              <li>Trazabilidad de cada corrección</li>
+              <li>Verificabilidad por terceros sin credenciales</li>
+            </ul>
+          </div>
+          <div class="out">
+            <h5>Lo que no ofrece</h5>
+            <ul>
+              <li>Protección frente a quien tenga acceso administrativo directo al motor y decida ejercerlo</li>
+              <li>Valor probatorio ante ninguna instancia: es cuestión jurídica, no técnica</li>
+            </ul>
+          </div>
+        </div>
+        <p>Decir esto de entrada es parte de lo que hace defendible el resto.</p>
+      </section>
+
+      <section id="s2">
+        <div class="sh"><span class="sn">02</span><h2>Alcance</h2></div>
+        <div class="split">
+          <div class="in">
+            <h5>Entra</h5>
+            <ul>
+              <li>Asiento de eventos de campo, procesamiento, validación y corrección</li>
+              <li>Ingesta desde dispositivos con conectividad intermitente</li>
+              <li>Emisión, congelación y sellado de resultados de modelo</li>
+              <li>Exportación de paquetes y verificación fuera del sistema</li>
+              <li>Marcado obligatorio del origen del dato</li>
+              <li>Las identidades de las personas, en tanto que quedan <em>fuera</em> del asiento</li>
+            </ul>
+          </div>
+          <div class="out">
+            <h5>No entra</h5>
+            <ul>
+              <li>La calidad del dato de origen: la integridad protege la cadena, no la medición</li>
+              <li>La corrección científica de un modelo</li>
+              <li>El valor probatorio ante tribunal u organismo</li>
+              <li>Disponibilidad y copia de seguridad</li>
+              <li>Cifrado en reposo y en tránsito</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="s3">
+        <div class="sh"><span class="sn">03</span><h2>Modelo append-only</h2>
+          <span class="badge b-hecho">hecho probado</span></div>
+        <p>Los registros no se modifican ni se eliminan una vez creados. La corrección no
+        sobrescribe: añade un evento nuevo que referencia al anterior.</p>
+
+        <h3>Defensa en el motor, en tres capas</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Capa</th><th>Qué detiene</th><th>Qué no detiene</th></tr></thead>
+            <tbody>
+              <tr><td><strong>1 · Permisos de rol</strong></td><td>Al rol de aplicación y a cualquier sesión con sus credenciales</td><td>Al propietario de las tablas y al superusuario</td></tr>
+              <tr><td><strong>2 · Disparadores de fila y de sentencia</strong></td><td><code>UPDATE</code>, <code>DELETE</code> y <code>TRUNCATE</code>, incluso sobre tablas vacías</td><td>A quien pueda desactivar los disparadores</td></tr>
+              <tr><td><strong>3 · Pruebas de integración</strong></td><td>La regresión: si una capa se cae, la batería falla</td><td>Nada en producción; avisa, no impide</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>El rol de aplicación <strong>nunca recibe</strong> <code>UPDATE</code> ni
+        <code>DELETE</code>. No basta con revocar lo concedido: lo correcto es no concederlo, y
+        revocar además como refuerzo.</p>
+
+<pre><span class="kw">GRANT</span> SELECT, INSERT <span class="kw">ON</span> asset, asset_status_event, detection, asset_proposal,
+                         review, seal, seal_anchor, trace_event <span class="kw">TO</span> castuo_app;
+
+<span class="kw">REVOKE</span> UPDATE, DELETE, TRUNCATE <span class="kw">ON ALL TABLES IN SCHEMA</span> public <span class="kw">FROM</span> castuo_app;
+
+<span class="kw">ALTER DEFAULT PRIVILEGES IN SCHEMA</span> public
+    <span class="kw">REVOKE</span> UPDATE, DELETE, TRUNCATE <span class="kw">ON</span> TABLES <span class="kw">FROM</span> castuo_app;</pre>
+
+        <p>La cláusula de privilegios por defecto evita el fallo habitual: una tabla creada más
+        tarde que nace con permisos amplios porque nadie se acordó de revocarlos. Los permisos, en
+        cambio, no alcanzan al propietario: por eso cada tabla lleva disparadores que rechazan la
+        operación con independencia de quién la ejecute, y <strong>a nivel de sentencia</strong>
+        además de a nivel de fila — un disparador de fila no se dispara sobre una tabla vacía, y
+        <code>TRUNCATE</code> no dispara nada a nivel de fila.</p>
+
+        <div class="note">
+          <p><b>Nota de despliegue</b> <span class="badge b-parcial">parcialmente resuelto</span> —
+          Este esquema deja fuera al superusuario y al propietario de las tablas. Reducir esa
+          superficie (propietario distinto del rol de mantenimiento, acceso administrativo
+          auditado, registro de conexiones) pertenece al plan de despliegue, no al del esquema.</p>
+        </div>
+
+        <h3>Ingesta idempotente <span class="badge b-hecho">hecho probado</span></h3>
+        <p>El sistema opera en escenarios <em>offline-first</em>. Cada evento lleva un UUID
+        generado en el dispositivo de origen; el núcleo rechaza toda inserción cuyo identificador
+        ya exista y devuelve el estado existente en lugar de crear una segunda fila. La robustez
+        de la sincronización no se paga con mutabilidad.</p>
+      </section>
+
+      <section id="s4">
+        <div class="sh"><span class="sn">04</span><h2>Las correcciones son eventos</h2></div>
+        <p>La edición destruye evidencia. Cualquier error se resuelve con un evento de corrección
+        que referencia el registro afectado, dejando visibles el error y su subsanación. El estado
+        vigente se obtiene plegando la secuencia, no leyendo una columna que alguien pudo
+        sobrescribir.</p>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Catálogo de eventos. Cuatro capas semánticas: captura, procesamiento,
+            validación y custodia física.</caption>
+            <thead><tr><th class="code">Cód.</th><th>Descripción</th><th>Origen</th><th>Referencia previa</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td class="code">E-01</td><td>Cierre de vuelo y sellado del paquete crudo</td><td>Estación</td><td>Raíz de cadena</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-02</td><td>Ingesta del paquete en el concentrador</td><td>Estación</td><td>Hash E-01</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-03</td><td>Derivación de descriptores por unidad</td><td>Estación/Núcleo</td><td>Hash E-02</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-04</td><td>Emisión y congelación de una versión de ordenación</td><td>Núcleo</td><td>Hash E-03</td><td><span class="badge b-hecho">probado</span></td></tr>
+              <tr><td class="code">E-05</td><td>Carga del orden del experto, posterior al sello</td><td>Núcleo</td><td>Hash E-04</td><td><span class="badge b-hecho">probado</span></td></tr>
+              <tr><td class="code">E-06</td><td>Apertura de lote por escaneo de marca física</td><td>Móvil</td><td>Identidad del dispositivo</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-07</td><td>Asiento de recurso o pieza en el lote abierto</td><td>Móvil</td><td>Hash E-06</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-08</td><td>Cierre formal del lote en el tajo</td><td>Móvil</td><td>Hash E-07</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-09</td><td>Entrada del lote en unidad de pila o patio</td><td>Móvil</td><td>Hash E-08</td><td><span class="badge b-diseno">diseño</span></td></tr>
+              <tr><td class="code">E-10</td><td>Generación del paquete de exportación firmado</td><td>Núcleo</td><td>Raíz de jornada</td><td><span class="badge b-parcial">parcial</span></td></tr>
+              <tr><td class="code">E-11</td><td>Registro de incidencia o corrección técnica</td><td>Cualquiera</td><td>Id. anterior + hash previo</td><td><span class="badge b-hecho">probado</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">
+          <p><b>Advertencia sobre este catálogo.</b> El motor encadena y protege eventos, pero
+          <b>no impone hoy esta taxonomía</b>: nada rechaza un evento que no encaje en E-01…E-11.
+          Lo construido es el principio —encadenamiento por dispositivo, corrección como evento
+          nuevo, sello previo a la carga del criterio experto— y las tres filas marcadas como
+          probadas. Presentar el catálogo completo como implementado sería justo el error que este
+          documento existe para evitar.</p>
+        </div>
+
+        <p>Dos consecuencias prácticas. Un historial sin correcciones no es necesariamente mejor
+        que uno con ellas: un registro que muestra su propia historia es más fácil de defender que
+        uno que aparece impecable. Y el orden de los eventos <strong>no lo fija la hora</strong> —
+        dentro de una misma transacción la hora del servidor es idéntica para todas las filas; el
+        orden lo fija una secuencia explícita por dispositivo y por entidad, verificada en el
+        motor. Este punto nació de un defecto real encontrado y corregido en el sistema.</p>
+      </section>
+
+      <section id="s5">
+        <div class="sh"><span class="sn">05</span><h2>Sellado temporal y firma</h2></div>
+
+        <h3>Sello local — inmediato <span class="badge b-hecho">hecho probado</span></h3>
+        <p>Contiene, como mínimo: hash del contenido, versión del algoritmo de canonicalización,
+        versión del modelo cuando el contenido es una salida de modelo, hora del servidor,
+        identificador del dispositivo o sesión y versión del protocolo. Su función es doble: da
+        integridad byte a byte del fichero exportado y, sobre todo, <strong>bloquea la carga del
+        criterio experto antes de que el sistema se haya comprometido</strong>. Esa segunda
+        función es la que convierte el sello en diseño experimental y no en un adorno
+        criptográfico.</p>
+
+        <h3>Anclaje externo RFC 3161 <span class="badge b-parcial">parcialmente resuelto</span></h3>
+        <p>El sello local no demuestra <em>cuándo</em> existió el contenido ante un tercero. El
+        token se guarda en una tabla de anclaje aparte, append-only, de modo que añadirlo no
+        modifica el sello base ni obliga a reexportar el histórico. Y la autoridad debe estar
+        <strong>en la Unión Europea</strong>: una fuera de ella reintroduciría la dependencia de
+        jurisdicción ajena que el diseño evita por otras vías.</p>
+        <p>El formato, la tabla de anclaje, la extracción del <code>messageImprint</code> y el
+        verificador están construidos y probados con tokens sintéticos. <strong>El anclaje contra
+        una autoridad real nunca se ha ejecutado.</strong> Es la única pieza del núcleo sin
+        contrastar con el mundo, y así se declara mientras lo sea.</p>
+
+        <h3>Raíz de jornada <span class="badge b-no">no existe</span></h3>
+        <p>Para agrupar las cadenas de todos los dispositivos en un único punto de anclaje se
+        computará una raíz por jornada o por lote, que es lo que se sella. El sistema encadena hoy
+        por dispositivo —decisión deliberada, porque en campo no hay un orden total entre
+        dispositivos— y la raíz es trabajo nuevo, compatible con lo construido pero no construido.
+        Hace falta <strong>antes</strong> del primer anclaje real.</p>
+
+        <h3>Hueco para la firma cualificada <span class="badge b-diseno">decisión de diseño</span></h3>
+        <p>El esquema y el formato de exportación reservan el espacio de una firma o certificado
+        cualificado futuro, de modo que integrarlo no obligue a rehacer el esquema ni a
+        reinterpretar el histórico.</p>
+      </section>
+
+      <section id="s6">
+        <div class="sh"><span class="sn">06</span><h2>Auditoría externa</h2></div>
+
+        <h3>Marcado de origen <span class="badge b-hecho">hecho probado</span></h3>
+        <p>Queda prohibida la mezcla de datos reales y sintéticos sin distinción técnica
+        inequívoca. Cada registro lleva una columna <code>origen</code>, no nula, inmutable y
+        restringida a un conjunto cerrado. En el sistema implementado ese conjunto tiene
+        <strong>tres</strong> valores y no dos.</p>
+
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th class="code">Valor</th><th>Qué es</th><th>Sinónimo de trabajo</th></tr></thead>
+            <tbody>
+              <tr><td class="code">real</td><td>Dato medido en campo en la campaña en curso</td><td class="code">campo</td></tr>
+              <tr><td class="code">simulado</td><td>Dato generado para demostración o prueba</td><td class="code">sintetico</td></tr>
+              <tr><td class="code">historico</td><td>Dato de campaña anterior o de fuente documental</td><td><em>sin equivalente</em></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>El tercer valor no es un lujo: un dato de campaña anterior fue real y no es dato de la
+        campaña en curso, y confundirlos falsearía cualquier contraste. Toda exportación que
+        contenga registros no reales lo declara en la cabecera de metadatos — importa
+        especialmente en demostración y transferencia tecnológica, donde el dato sintético es útil
+        pero no debe confundirse con evidencia operativa.</p>
+
+        <h3>Recomputación</h3>
+        <p>Un verificador independiente debe poder, sin la aplicación y sin credenciales: extraer
+        contenido y metadatos del paquete; recomputar el hash byte a byte con el algoritmo y la
+        versión declarados; comprobar la coherencia del sello local; validar el anclaje temporal
+        cuando exista, y decir que no existe cuando no; y rechazar el paquete completo ante
+        cualquier discrepancia. Un solo byte alterado invalida la exportación.</p>
+      </section>
+
+      <section id="s7">
+        <div class="sh"><span class="sn">07</span><h2>Estado de la evidencia</h2></div>
+        <p>Qué está probado en software y qué no existe todavía en campo. Es la tabla que evita
+        que este protocolo se lea como la descripción de un sistema en operación.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Propiedad</th><th>En software</th><th>En campo</th></tr></thead>
+            <tbody>
+              <tr><td>Inmutabilidad en el motor, tres capas</td><td><span class="badge b-hecho">probada</span></td><td>Sin desplegar en operación real</td></tr>
+              <tr><td>Ingesta idempotente</td><td><span class="badge b-hecho">probada</span></td><td>Sin dispositivos reales</td></tr>
+              <tr><td>Corrección como evento nuevo</td><td><span class="badge b-hecho">probada</span></td><td>Sin uso real</td></tr>
+              <tr><td>Orden por secuencia, no por hora</td><td><span class="badge b-hecho">probada</span></td><td>—</td></tr>
+              <tr><td>Determinismo del hash</td><td><span class="badge b-hecho">probada</span></td><td>—</td></tr>
+              <tr><td>Sello local previo al criterio experto</td><td><span class="badge b-hecho">probada</span></td><td>Sin técnico real</td></tr>
+              <tr><td>Verificación por un tercero</td><td><span class="badge b-hecho">probada</span></td><td>Sin auditor real</td></tr>
+              <tr><td>Marcado de origen</td><td><span class="badge b-hecho">probada</span></td><td>—</td></tr>
+              <tr><td>Catálogo E-01…E-11 completo</td><td><span class="badge b-parcial">3 de 11</span></td><td>No</td></tr>
+              <tr><td>Raíz de jornada</td><td><span class="badge b-no">no existe</span></td><td>No</td></tr>
+              <tr><td>Anclaje RFC 3161 real</td><td>Solo tokens sintéticos</td><td>No</td></tr>
+              <tr><td>Credenciales rotables y revocación auditada</td><td><span class="badge b-no">no existe</span></td><td>No</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s8">
+        <div class="sh"><span class="sn">08</span><h2>Soberanía del dato</h2></div>
+        <p>El protocolo es el instrumento con el que se comprueba la soberanía del dato, que se
+        declara desglosada y nunca como un todo.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th class="code">#</th><th>Propiedad</th><th>Estado</th><th>Qué falta para subirlo</th></tr></thead>
+            <tbody>
+              <tr><td class="code">S-1</td><td>El dato nace y se usa donde se genera</td><td><span class="badge b-diseno">diseño</span></td><td>Medir la operación completa sin cobertura</td></tr>
+              <tr><td class="code">S-2</td><td>La inferencia no depende de un proveedor externo</td><td><span class="badge b-hecho">probado</span></td><td>—</td></tr>
+              <tr><td class="code">S-3</td><td>La residencia es europea y conocida</td><td><span class="badge b-audit">auditoría</span></td><td>Auditoría de residencia</td></tr>
+              <tr><td class="code">S-4</td><td>La verificación no exige confiar en el sistema</td><td><span class="badge b-hecho">probado</span></td><td>Contraste con un verificador ajeno</td></tr>
+              <tr><td class="code">S-5</td><td>Sin dependencia de red pública ni jurisdicción ajena para verificar</td><td><span class="badge b-diseno">diseño</span></td><td>Elegir autoridad de sellado en la UE</td></tr>
+              <tr><td class="code">S-6</td><td>Las personas no quedan atrapadas en el asiento</td><td><span class="badge b-parcial">parcial</span></td><td>Cerrar la referencia de titularidad y su base legal</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>S-5 se enuncia como <strong>objetivo de diseño del formato verificable</strong>, no como
+        garantía: el paquete está construido para poder comprobarse sin recurrir a una red pública,
+        y esa propiedad se sostiene mientras el formato y el verificador se conserven.</p>
+      </section>
+
+      <section id="s9">
+        <div class="sh"><span class="sn">09</span><h2>Riesgos</h2></div>
+        <p>Un protocolo sin tabla de riesgos se lee como una promesa. Estos condicionan su
+        cumplimiento, y ninguno se resuelve escribiendo más código.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th class="code">Cód.</th><th>Riesgo</th><th>Efecto sobre el protocolo</th><th>Se resuelve</th></tr></thead>
+            <tbody>
+              <tr><td class="code">R-01</td><td>Sin autorización de vuelo ni parcela comprometida</td><td>Sin eventos de captura reales</td><td>F0</td></tr>
+              <tr><td class="code">R-02</td><td>Sin acuerdo de acceso al protocolo de muestreo de un tercero</td><td>Falta el eslabón de verdad de campo</td><td>F0 · tercero</td></tr>
+              <tr><td class="code">R-03</td><td>Sin interlocutor industrial</td><td>La cadena de custodia no llega al final</td><td>F3 · tercero</td></tr>
+              <tr><td class="code">R-04</td><td>El indicador derivado del sensor puede no aportar</td><td>No afecta a la integridad; sí al valor del contraste</td><td>F2</td></tr>
+              <tr><td class="code">R-05</td><td>Residencia europea sin auditar</td><td>S-3 no puede afirmarse</td><td>F2–F3</td></tr>
+              <tr><td class="code">R-06</td><td>Autoridad de sellado sin elegir ni probar</td><td>El anclaje externo sigue sin existir</td><td>Antes del sello real</td></tr>
+              <tr><td class="code">R-07</td><td>Acceso administrativo directo al motor</td><td>Elude las capas 1 y 2</td><td>Plan de despliegue</td></tr>
+              <tr><td class="code">R-08</td><td>Marca física que no sobrevive a la campaña</td><td>Rompe la continuidad entre campañas</td><td>F1</td></tr>
+              <tr><td class="code">R-09</td><td>Referencia de titularidad sin base legal cerrada</td><td>Conflicto entre append-only y derecho de supresión</td><td>Revisión jurídica</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s10">
+        <div class="sh"><span class="sn">10</span><h2>Criterios de aceptación</h2></div>
+        <p>El protocolo se considera cumplido solo si el sistema <strong>falla</strong> en todos
+        estos casos. Los once primeros tienen hoy prueba automatizada; los tres últimos están
+        marcados y no se dan por buenos.</p>
+        <ol class="criteria">
+          <li><span>Una sentencia <code>UPDATE</code>, <code>DELETE</code> o <code>TRUNCATE</code> es aceptada sobre una tabla de asiento por el rol de aplicación previsto.</span></li>
+          <li><span>Un disparador de sentencia no rechaza esa misma operación sobre una tabla vacía.</span></li>
+          <li><span>Se puede insertar un registro con <code>origen</code> nulo o fuera del conjunto cerrado.</span></li>
+          <li><span><code>origen</code> puede modificarse después de la inserción.</span></li>
+          <li><span>Un identificador duplicado genera una segunda fila en lugar de tratarse como reintento idempotente.</span></li>
+          <li><span>Una corrección elimina, oculta o hace inconsultable el registro original.</span></li>
+          <li><span>El criterio experto puede cargarse antes de que exista sello del resultado del sistema.</span></li>
+          <li><span>Dos eventos escritos en la misma transacción quedan sin orden determinista.</span></li>
+          <li><span>Un paquete exportado con un byte alterado supera la recomputación del sello.</span></li>
+          <li><span>Un paquete con registros no reales no lo declara en su cabecera de metadatos.</span></li>
+          <li><span>La verificación exige la aplicación, la base de datos o credenciales.</span></li>
+          <li class="open"><span><span class="mark">[POR PROBAR]</span> El anclaje contra una autoridad de sellado real no se valida.</span></li>
+          <li class="open"><span><span class="mark">[POR CONSTRUIR]</span> La raíz de jornada no agrupa todas las cadenas de dispositivo de esa jornada.</span></li>
+          <li class="open"><span><span class="mark">[POR CONSTRUIR]</span> Una credencial de dispositivo revocada sigue admitiéndose, o su revocación no queda registrada.</span></li>
+        </ol>
+      </section>
+
+      <section id="s11">
+        <div class="sh"><span class="sn">11</span><h2>Encaje por línea de proyecto</h2></div>
+        <p>El núcleo de este protocolo es neutral respecto al dominio, y esa neutralidad es lo que
+        permite escribirlo una vez y aplicarlo en varias líneas. Lo que cambia por proyecto es el
+        catálogo de eventos, el interlocutor que audita y la naturaleza de la verdad de campo.</p>
+
+        <h4>SUBER UAV · alcornocal y cadena del corcho</h4>
+        <p>La verdad de campo la aporta el muestreo del técnico, y el protocolo la digitaliza y la
+        conecta con lo que ocurre después: saca, lote y resultado industrial. La clase de calidad
+        se <strong>registra con método y autoría</strong>, nunca se infiere, y el muestreo se
+        referencia, nunca se deduce del sensor. El interés sectorial en digitalización y
+        coordinación de la cadena de valor es el que da sentido a que la evidencia sea portátil
+        entre monte, laboratorio, industria y auditoría.</p>
+
+        <h4>SENDA · recursos hídricos</h4>
+        <p>La verdad de campo la aportan medidas instrumentales y el interlocutor que audita es un
+        organismo regulador, con exigencias de rastro documental y de plazos. Cambian los eventos
+        de captura y el destinatario del paquete; no cambian el asiento, la corrección por evento,
+        el sello ni la verificación.</p>
+
+        <h4>Líneas futuras</h4>
+        <p>El requisito para incorporarse es el mismo: declarar su catálogo de eventos, declarar
+        qué significa <code>origen</code> en su dominio y aceptar los catorce criterios. Lo que no
+        se admite es aflojar una garantía del núcleo para acomodar un dominio: si un dominio
+        necesita mutabilidad, lo que necesita es una tabla de eventos.</p>
+      </section>
+
+      <div class="closer">
+        <p>Este protocolo define una práctica de registro cuyo resultado puede ser comprobado por
+        quien no participó en producirlo.</p>
+        <p class="colophon">
+          Su utilidad no está en la solidez de sus afirmaciones, sino en que cada una lleva escrito
+          su estado y puede ser contrastada: lo probado con la batería de pruebas, lo decidido con
+          el registro de decisiones, lo pendiente con la lista de riesgos.<br><br>
+          CASTÚO-SYSTEM · Protocolo de Integridad Técnica v0.1 · 2 de septiembre de 2026<br>
+          Fuente en el repositorio: <code>docs/PROTOCOLO_INTEGRIDAD.md</code>.
+          Estado real del proyecto: <code>docs/CASTUO_CORCHO_ESTADO_MAESTRO.md</code> v0.7.<br>
+          Este documento es una captura de trabajo, no la fuente de verdad.
+        </p>
+      </div>
+
+    </main>
+  </div>
+</div>

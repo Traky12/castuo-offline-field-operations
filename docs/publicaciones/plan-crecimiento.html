@@ -1,0 +1,455 @@
+<title>Plan de Crecimiento SUBER UAV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+:root{--paper:#F4F5F2;--surface:#FCFCFA;--sunk:#EBEDE7;--ink:#16211A;--muted:#5F6A61;
+--rule:#D2D6CF;--rule-soft:#E2E5DE;--accent:#2C5340;--accent-dim:#4A7A5F;--alert:#A33E12;--warn:#7A6420;
+--sans:"IBM Plex Sans Condensed","Helvetica Neue",Arial,sans-serif;
+--serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+--mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+--measure:66ch;--s1:.35rem;--s2:.7rem;--s3:1.1rem;--s4:1.8rem;--s5:2.8rem;--s6:4.4rem;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--paper:#111512;--surface:#181D19;--sunk:#1E241F;--ink:#E5E9E2;--muted:#96A098;
+--rule:#2E362F;--rule-soft:#242B25;--accent:#86B99B;--accent-dim:#6E9C82;--alert:#E08050;--warn:#C9AC55;}}
+:root[data-theme="dark"]{--paper:#111512;--surface:#181D19;--sunk:#1E241F;--ink:#E5E9E2;--muted:#96A098;
+--rule:#2E362F;--rule-soft:#242B25;--accent:#86B99B;--accent-dim:#6E9C82;--alert:#E08050;--warn:#C9AC55;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+p{margin:0 0 var(--s3);max-width:var(--measure)}
+a{color:var(--accent);text-underline-offset:2px}
+strong{font-weight:500} code{font-family:var(--mono);font-size:.88em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--s4)}
+
+.masthead{border-bottom:2px solid var(--ink);padding:var(--s5) 0 var(--s4)}
+.eyebrow{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.16em;
+text-transform:uppercase;color:var(--muted);margin:0 0 var(--s3)}
+h1{font-family:var(--sans);font-weight:700;letter-spacing:-.015em;
+font-size:clamp(2.1rem,5.4vw,3.5rem);line-height:1;margin:0 0 var(--s2);text-wrap:balance}
+.deck{font-family:var(--sans);font-size:clamp(1rem,2.1vw,1.3rem);color:var(--muted);
+max-width:52ch;margin:0 0 var(--s4)}
+.deck b{color:var(--ink);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);font-family:var(--mono);
+font-size:.74rem;color:var(--muted)}
+.meta b{font-weight:500;color:var(--ink)}
+.rule{margin:var(--s4) 0 0;padding:var(--s3) var(--s3) var(--s3) var(--s4);
+border-left:3px solid var(--accent);background:var(--sunk)}
+.rule p{margin:0;font-family:var(--sans);font-size:1.05rem;max-width:70ch}
+
+section{padding:var(--s5) 0 0}
+section+section{border-top:1px solid var(--rule-soft)}
+.sh{display:flex;gap:var(--s3);align-items:baseline;margin-bottom:var(--s3);flex-wrap:wrap}
+.sn{font-family:var(--mono);font-size:.76rem;color:var(--paper);background:var(--ink);
+padding:.16rem .46rem;border-radius:2px;flex:none}
+h2{font-family:var(--sans);font-weight:700;font-size:clamp(1.35rem,3vw,1.95rem);
+line-height:1.08;margin:0;letter-spacing:-.008em;text-wrap:balance}
+h3{font-family:var(--sans);font-weight:600;font-size:1.06rem;margin:var(--s4) 0 var(--s2)}
+h4{font-family:var(--sans);font-weight:600;font-size:.76rem;letter-spacing:.12em;
+text-transform:uppercase;color:var(--muted);margin:var(--s4) 0 var(--s2)}
+
+/* vías */
+.lanes{display:grid;gap:2px;background:var(--rule-soft);border:1px solid var(--rule-soft);
+margin:var(--s3) 0 var(--s4)}
+@media(min-width:820px){.lanes{grid-template-columns:repeat(3,1fr)}}
+.lane{background:var(--surface);padding:var(--s3);display:flex;flex-direction:column;gap:var(--s2)}
+.lane .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--accent-dim)}
+.lane h5{font-family:var(--sans);font-size:1.08rem;font-weight:600;margin:0}
+.lane p{margin:0;font-size:.92rem;color:var(--muted);max-width:none}
+.lane ul{margin:var(--s1) 0 0;padding-left:1.05rem;font-size:.9rem}
+.lane li{margin-bottom:.2rem}
+.lane.c{background:var(--sunk)}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto;padding-top:var(--s2)}
+.chip{font-family:var(--mono);font-size:.68rem;border:1px solid var(--rule);
+padding:.1rem .38rem;border-radius:2px;color:var(--muted)}
+.chip.done{border-color:var(--accent);color:var(--accent);font-weight:500}
+.chip.blocked{border-color:var(--alert);color:var(--alert);border-style:dotted}
+
+/* escaleras */
+.ladder{display:grid;gap:2px;background:var(--rule-soft);border:1px solid var(--rule-soft);
+margin:var(--s3) 0 var(--s4)}
+.rung{background:var(--surface);padding:var(--s3);display:grid;gap:var(--s2);
+grid-template-columns:3.6rem 1fr}
+@media(min-width:760px){.rung{grid-template-columns:3.6rem 1fr 1.2fr}}
+.rung .lv{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--accent)}
+.rung h5{font-family:var(--sans);font-size:1rem;font-weight:600;margin:0}
+.rung p{margin:.15rem 0 0;font-size:.9rem;color:var(--muted);max-width:none}
+.rung .cond{font-size:.88rem;color:var(--muted);max-width:none;margin:0}
+.rung .cond b{color:var(--ink);font-weight:500}
+.rung:nth-child(1){background:var(--sunk)}
+
+.tablewrap{overflow-x:auto;margin:var(--s3) 0 var(--s4);border-bottom:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:520px}
+caption{text-align:left;font-family:var(--sans);font-size:.78rem;color:var(--muted);padding-bottom:var(--s2)}
+th,td{text-align:left;padding:.5rem var(--s3) .5rem 0;vertical-align:top}
+thead th{font-family:var(--sans);font-size:.69rem;font-weight:600;letter-spacing:.11em;
+text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--ink);padding-bottom:var(--s1)}
+tbody tr{border-bottom:1px solid var(--rule-soft)}
+tbody tr:last-child{border-bottom:0}
+td.code,th.code{font-family:var(--mono);font-size:.78rem;white-space:nowrap}
+tr.done td{background:var(--sunk)}
+.st-done{color:var(--accent);font-weight:500}
+.st-block{color:var(--alert)}
+
+.split{display:grid;gap:2px;margin:var(--s3) 0 var(--s4)}
+@media(min-width:720px){.split{grid-template-columns:1fr 1fr}}
+.split>div{background:var(--surface);border:1px solid var(--rule-soft);padding:var(--s3)}
+.split .good{border-top:3px solid var(--accent)}
+.split .bad{border-top:3px solid var(--alert)}
+.split h5{font-family:var(--sans);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;
+margin:0 0 var(--s2);font-weight:600}
+.split .good h5{color:var(--accent)} .split .bad h5{color:var(--alert)}
+.split ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.split li{margin-bottom:.35rem}
+
+ol.next{counter-reset:n;list-style:none;margin:var(--s3) 0 var(--s3);padding:0;
+display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft)}
+ol.next li{counter-increment:n;background:var(--surface);padding:var(--s3);
+display:grid;grid-template-columns:2.2rem 1fr;gap:var(--s2);align-items:baseline}
+ol.next li::before{content:counter(n,decimal-leading-zero);font-family:var(--mono);
+font-size:.74rem;color:var(--accent-dim)}
+ol.next b{font-family:var(--sans);font-weight:600}
+ol.next span{font-size:.94rem}
+ol.next li.par{background:var(--sunk)}
+ol.next li.par::before{color:var(--warn)}
+
+.note{border-left:3px solid var(--warn);background:var(--sunk);padding:var(--s3);
+margin:var(--s3) 0 var(--s4);font-size:.93rem}
+.note p{margin:0;max-width:76ch}
+.pend{font-family:var(--mono);font-size:.78rem;color:var(--alert)}
+
+.closer{margin:var(--s6) 0 0;border-top:2px solid var(--ink);padding:var(--s4) 0 var(--s6)}
+.closer p{font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,2.4vw,1.4rem);
+line-height:1.45;max-width:40ch;margin:0 0 var(--s3)}
+.colophon{font-family:var(--mono);font-size:.7rem;color:var(--muted);line-height:1.7;font-style:normal}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CASTÚO-SYSTEM™ SUBER UAV · Plan de crecimiento · v0.1</p>
+    <h1>Cómo crece este proyecto</h1>
+    <p class="deck">Del núcleo probado al piloto de campo. <b>Tres vías en paralelo</b>, diez
+    unidades mínimas demostrables y la disciplina que hace el avance comprobable en lugar de
+    opinable.</p>
+    <div class="meta">
+      <span><b>Fecha</b> 2 sep 2026</span>
+      <span><b>Hecho</b> UMD-1</span>
+      <span><b>Siguiente</b> UMD-2</span>
+      <span><b>Batería</b> 284 pruebas</span>
+      <span><b>Horizonte</b> saca de 2027</span>
+    </div>
+    <div class="rule">
+      <p><strong>Regla de ordenación.</strong> Se construye primero lo que más sube el nivel de
+      evidencia por unidad de coste, y dentro de eso, primero lo que no depende de nadie
+      externo. Las gestiones con terceros se abren el primer día — no las controlamos, y el
+      tiempo de respuesta de un tercero no se comprime trabajando más.</p>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="v">
+      <div class="sh"><span class="sn">01</span><h2>Las tres vías</h2></div>
+      <p>La lista de lo que falta mezcla tres cosas de naturaleza distinta. Tratadas como una
+      sola lista ordenada, la primera se retrasa esperando a la tercera y el proyecto pasa
+      meses sin producir evidencia mientras espera una reunión.</p>
+
+      <div class="lanes">
+        <div class="lane">
+          <span class="tag">VÍA A</span>
+          <h5>Interna</h5>
+          <p>No depende de nadie. Es la única con cadencia predecible, y por eso sostiene el
+          proyecto mientras las otras dos maduran.</p>
+          <ul>
+            <li>Núcleo de evidencia</li>
+            <li>Capa de captura</li>
+            <li>Ensayos en seco</li>
+          </ul>
+          <div class="chips">
+            <span class="chip done">UMD-1 ✓</span><span class="chip">UMD-2</span>
+            <span class="chip">UMD-3</span><span class="chip">UMD-5</span>
+            <span class="chip">UMD-6</span>
+          </div>
+        </div>
+        <div class="lane">
+          <span class="tag">VÍA B</span>
+          <h5>De campo</h5>
+          <p>Necesita un aparato y un sitio. Todo lo que se puede ensayar en seco se ensaya
+          antes de gastar una jornada de campo.</p>
+          <ul>
+            <li>Banco de sensores</li>
+            <li>Marca física</li>
+            <li>Vuelos de ensayo</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">UMD-7</span><span class="chip">UMD-9</span>
+          </div>
+        </div>
+        <div class="lane c">
+          <span class="tag">VÍA C</span>
+          <h5>De acuerdos</h5>
+          <p>Depende de que alguien diga que sí. <strong>Se abre el primer día</strong>, aunque
+          el resultado tarde meses.</p>
+          <ul>
+            <li>Parcela y técnico</li>
+            <li>Protocolo de muestreo (A-06)</li>
+            <li>Interlocutor industrial (A-07)</li>
+            <li>Autoridad de sellado UE (A-03)</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">UMD-4</span><span class="chip blocked">UMD-8</span>
+            <span class="chip blocked">UMD-10</span>
+          </div>
+        </div>
+      </div>
+
+      <p>Punto de encuentro: la vía C desbloquea gates que la vía A ya sabe ejecutar en seco.
+      Cuando llegue el «sí», el software no debería tener que construirse — debería tener que
+      conectarse.</p>
+    </section>
+
+    <section id="umd">
+      <div class="sh"><span class="sn">02</span><h2>Unidades mínimas demostrables</h2></div>
+      <p>Una UMD atraviesa el sistema de punta a punta, por fina que sea, y deja evidencia
+      comprobable. Una capa horizontal completa —«todas las migraciones»— no es una UMD.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th class="code">#</th><th>Qué recorre</th><th class="code">Vía</th><th>Depende de</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr class="done"><td class="code">UMD-1</td><td>Misión → observación → reidentificación → veredicto G1 en seco</td><td class="code">A</td><td>—</td><td class="st-done">Hecha</td></tr>
+            <tr><td class="code">UMD-2</td><td>Protocolo de reidentificación registrado antes del dato → resultado sellado → paquete verificable</td><td class="code">A</td><td>UMD-1</td><td>Siguiente</td></tr>
+            <tr><td class="code">UMD-3</td><td>Raíz de jornada sobre las cadenas de dispositivo</td><td class="code">A</td><td>—</td><td>Siguiente</td></tr>
+            <tr><td class="code">UMD-4</td><td>Anclaje RFC 3161 contra autoridad real de la UE</td><td class="code">A+C</td><td>A-03, UMD-3</td><td>Tras UMD-3</td></tr>
+            <tr><td class="code">UMD-5</td><td>Credenciales: rotación, caducidad y revocación auditada</td><td class="code">A</td><td>—</td><td>Tras UMD-4</td></tr>
+            <tr><td class="code">UMD-6</td><td>Captura de campo mínima, offline, con bandeja de salida</td><td class="code">A</td><td>A-10 sin decidir</td><td>Abierta</td></tr>
+            <tr><td class="code">UMD-7</td><td><code>forest_asset</code> + atributos de <code>tree</code> + identidad I1</td><td class="code">A+B</td><td>A-01, A-02</td><td>Tras UMD-2</td></tr>
+            <tr><td class="code">UMD-8</td><td><code>cork_sample</code> con protocolo versionado</td><td class="code">A+C</td><td>A-06</td><td class="st-block">Bloqueada</td></tr>
+            <tr><td class="code">UMD-9</td><td><code>harvest_event</code> completo + <code>cork_lot</code></td><td class="code">A+B</td><td>A-02, UMD-6</td><td>Tras UMD-6</td></tr>
+            <tr><td class="code">UMD-10</td><td><code>industrial_process</code> + <code>industrial_result</code></td><td class="code">A+C</td><td>A-07</td><td class="st-block">Bloqueada</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Las dos bloqueadas lo están por acuerdos, no por ingeniería. Adelantarlas construyendo
+      un esquema contra una metodología imaginada es el error que más caro sale: se descubre
+      roto justo cuando llega el dato real.</p>
+
+      <h3>UMD-1, hecha en este bloque</h3>
+      <p>Separa la observación de la detección —una incoherencia abierta desde el
+      reposicionamiento— y añade la entidad sin la cual no hay serie temporal:</p>
+      <ul>
+        <li><code>uav_mission</code>: aeronave, carga útil, altura, solape, operador opaco,
+        versión de extractor y <strong>referencia de autorización de vuelo obligatoria cuando
+        <code>origen = 'real'</code></strong>, comprobada por el motor.</li>
+        <li><code>uav_observation</code>: el descriptor por unidad, con vínculo al árbol
+        <strong>anulable</strong> — reidentificar es precisamente lo que G1 tiene que
+        demostrar, y forzarlo en la inserción daría por supuesto el resultado.</li>
+        <li><code>detection.observation_id</code>: reprocesar un vuelo con un modelo nuevo ya
+        no duplica el dato bruto.</li>
+        <li>Reidentificación por <strong>vecino mutuo más cercano</strong> con tolerancia
+        obligatoria y sin valor por defecto. Mutuo, porque «el más cercano de A en B» no es
+        simétrico, y una métrica que cambia al invertir los argumentos no vale para un gate.</li>
+      </ul>
+      <div class="note">
+        <p><b>Lo que UMD-1 no demuestra:</b> que un vuelo real produzca esos descriptores. Solo
+        que el sistema sabe registrar dos misiones, compararlas y emitir un veredicto
+        reproducible. El ensayo sobre 60 pies sintéticos da 0,9500 de tasa de reencuentro con
+        3 pies perdidos a propósito y tolerancia de 1,00 m pactada antes de generar el dato.</p>
+      </div>
+    </section>
+
+    <section id="seco">
+      <div class="sh"><span class="sn">03</span><h2>Ensayo en seco obligatorio</h2></div>
+      <div class="rule">
+        <p>Ningún gate se intenta en campo antes de que su ensayo en seco pase con datos
+        sintéticos.</p>
+      </div>
+      <p>No es prudencia, es aritmética. Una jornada de campo cuesta desplazamiento, aparato,
+      permiso y —en G2— el tiempo de un técnico. Descubrir en esa jornada que el sistema no
+      sabe registrar dos misiones del mismo rodal es gastar todo eso para aprender algo que un
+      guion de cien líneas dice gratis. Y <strong>perder una ventana del monte cuesta un
+      año</strong>, no una semana.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Gate</th><th>Ensayo en seco</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>G1 · captura repetible</td><td class="code">demo_gate_g1.py</td><td class="st-done">Existe</td></tr>
+            <tr><td>G2 · concordancia</td><td class="code">demo_gate_g2.py</td><td class="st-done">Existe</td></tr>
+            <tr><td>G3 · campaña registrada</td><td class="code">demo_gate_g3.py</td><td class="st-block">No existe · UMD-9</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Efecto secundario valioso: obliga a fijar el método —tolerancia, umbral, métrica—
+      antes de tener el dato, que es la misma disciplina que sostiene el contraste ciego y aquí
+      sale gratis.</p>
+    </section>
+
+    <section id="carga">
+      <div class="sh"><span class="sn">04</span><h2>Escalera de carga útil</h2></div>
+      <p>El UAV no empieza con el sensor más caro. Cada peldaño se justifica con lo que produjo
+      el anterior. Está en el motor como tipo cerrado y viaja en cada misión: subir un peldaño
+      es una decisión registrada, no un ajuste que nadie recuerda haber hecho.</p>
+
+      <div class="ladder">
+        <div class="rung">
+          <span class="lv">P0</span>
+          <div><h5>RGB</h5><p>La cámara que ya se tiene.</p></div>
+          <p class="cond">Tiene que demostrar que <b>se extraen posiciones y descriptores por
+          pie, y que G1 pasa</b>.</p>
+        </div>
+        <div class="rung">
+          <span class="lv">P1</span>
+          <div><h5>RGB + posicionamiento preciso</h5><p>Menos deriva entre vuelos.</p></div>
+          <p class="cond">Tiene que demostrar que <b>la tolerancia de reidentificación baja lo
+          suficiente</b> para que la serie temporal sea útil.</p>
+        </div>
+        <div class="rung">
+          <span class="lv">P2</span>
+          <div><h5>Multiespectral</h5><p>Indicadores de riesgo sanitario.</p></div>
+          <p class="cond">Tiene que demostrar que <b>el indicador aporta sobre la observación
+          del técnico</b>. Puede salir en negativo, y el proyecto sobrevive a ese resultado.</p>
+        </div>
+        <div class="rung">
+          <span class="lv">P3</span>
+          <div><h5>LiDAR</h5><p>Variables dendrométricas.</p></div>
+          <p class="cond">Tiene que demostrar que <b>mejora de forma medible lo que ya daban
+          los peldaños anteriores</b>.</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <p><b>Lo que esta escalera evita:</b> comprar LiDAR antes de haber demostrado que se
+        puede reencontrar un árbol entre dos vuelos. Es el gasto que más fácil se justifica en
+        una reunión y el que más probablemente se queda sin usar.</p>
+      </div>
+    </section>
+
+    <section id="ident">
+      <div class="sh"><span class="sn">05</span><h2>Escalera de identidad del árbol</h2></div>
+      <p>La decisión sobre marca física estaba planteada como una elección única. Funciona
+      mejor como escalera: cada peldaño es utilizable por sí solo y el siguiente solo se paga
+      si el anterior se queda corto.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th class="code">#</th><th>Cómo se identifica un pie</th><th>Qué cuesta</th><th>Qué falla</th></tr></thead>
+          <tbody>
+            <tr><td class="code">I0</td><td>Solo posición</td><td>Nada</td><td>Deriva del posicionamiento; pies juntos</td></tr>
+            <tr><td class="code">I1</td><td>Posición + marca pasiva duradera</td><td>Una campaña de marcado</td><td>Hay que leerla a mano</td></tr>
+            <tr><td class="code">I2</td><td>Marca legible por el móvil en el tajo</td><td>Medio</td><td>Depende de la captura de campo (UMD-6)</td></tr>
+            <tr><td class="code">I3</td><td>Marca legible desde el aire</td><td>Alto, no resuelto</td><td>Puede no sobrevivir a la saca</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Criterio de subida:</strong> se sube cuando el ensayo de G1 con el peldaño
+      actual no alcanza la tolerancia pactada, no antes. Y el peldaño elegido tiene que
+      sobrevivir al descorche: una marca que se va con la corteza rompe la continuidad justo en
+      el momento que más importa.</p>
+    </section>
+
+    <section id="ev">
+      <div class="sh"><span class="sn">06</span><h2>Presupuesto y deuda de evidencia</h2></div>
+      <p>Cada gate declara <em>antes de empezar</em> qué evidencia debe producir y de qué
+      nivel, con la escala EQ1–EQ6. Sin esto, «el gate ha ido bien» es una opinión.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Gate</th><th>Evidencia que debe producir</th><th class="code">Nivel</th></tr></thead>
+          <tbody>
+            <tr><td>G1</td><td>Dos misiones registradas, reidentificación sobre tolerancia pactada, paquete verificable de ambas</td><td class="code">EQ4</td></tr>
+            <tr><td>G2</td><td>Orden del sistema sellado antes del orden del técnico; concordancia sobre umbral registrado antes del dato</td><td class="code">EQ4→EQ5</td></tr>
+            <tr><td>G3</td><td>Cada lote industrial resuelto hasta sus pies; verificación del paquete sin fallo</td><td class="code">EQ4</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Un gate no se da por superado con evidencia de nivel inferior al
+      declarado.</strong> Si G1 solo produce capturas de pantalla, G1 no está superado aunque
+      todo el mundo haya visto que funciona.</p>
+
+      <h3>Deuda de evidencia</h3>
+      <p>El equivalente de la deuda técnica, para afirmaciones. Toda frase publicada por encima
+      de su nivel es deuda: se registra, tiene dueño y vence en un gate.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th class="code">#</th><th>Afirmación</th><th>Nivel real</th><th>Se enuncia como</th><th class="code">Vence</th></tr></thead>
+          <tbody>
+            <tr><td class="code">DE-01</td><td>Pesos de la ordenación (0,6 / 0,4)</td><td>decisión de diseño</td><td>como si estuvieran calibrados</td><td class="code">G2</td></tr>
+            <tr><td class="code">DE-02</td><td>Operación sin cobertura</td><td>decisión de diseño</td><td>capacidad</td><td class="code">G1</td></tr>
+            <tr><td class="code">DE-03</td><td>Residencia europea</td><td>sin auditar</td><td>propiedad</td><td class="code">F2–F3</td></tr>
+            <tr><td class="code">DE-04</td><td>Catálogo E-01…E-11</td><td>3 de 11 implementados</td><td>taxonomía vigente</td><td class="code">F1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Un preprototipo tiene deuda de evidencia por definición. Es mala cuando no está
+      registrada, porque entonces nadie sabe cuánta hay ni cuándo vence.</p>
+    </section>
+
+    <section id="salud">
+      <div class="sh"><span class="sn">07</span><h2>Señales de crecimiento</h2></div>
+      <div class="split">
+        <div class="good">
+          <h5>Sano</h5>
+          <ul>
+            <li>Cada bloque de trabajo sube al menos una afirmación de nivel de evidencia</li>
+            <li>La deuda de evidencia baja, o al menos no crece sin registrarse</li>
+            <li>Los ensayos en seco se escriben antes que el trabajo de campo</li>
+            <li>Las decisiones abiertas se cierran o se reasignan, no se arrastran calladas</li>
+          </ul>
+        </div>
+        <div class="bad">
+          <h5>No sano</h5>
+          <ul>
+            <li>El número de pruebas crece pero ninguna afirmación sube de nivel</li>
+            <li>Se construyen entidades bloqueadas por acuerdos que no llegan</li>
+            <li>Una capacidad aparece en una presentación antes que en el catálogo de fortalezas</li>
+            <li>Se sube un peldaño de carga útil sin que el anterior cerrara su gate</li>
+            <li>Una decisión abierta cambia de fecha por tercera vez sin que nadie lo registre</li>
+          </ul>
+        </div>
+      </div>
+      <p>Esa última merece atención: una decisión abierta que se aplaza tres veces no es una
+      decisión pendiente — es una decisión tomada por omisión.</p>
+
+      <h4>Lo que no acelera el proyecto</h4>
+      <p>Escrito aquí para no tener que discutirlo cada dos meses: más sensores (el cuello de
+      botella no es la resolución, es que no hay parcela ni técnico) · un modelo más grande
+      (sin dato de campo etiquetado, produce mejores números sobre datos simulados) · adelantar
+      la integración industrial (sin trazabilidad demostrada, la cadena no tiene qué
+      transportar) · el panel de cuatro vistas (enseña lo que ya existe, no cierra ningún
+      riesgo) · renombrar el repositorio · una demostración más con datos sintéticos.</p>
+    </section>
+
+    <section id="next">
+      <div class="sh"><span class="sn">08</span><h2>Qué se hace a continuación</h2></div>
+      <ol class="next">
+        <li><span><b>UMD-2 · sellar el resultado de G1.</b> Protocolo de reidentificación
+        registrado antes del dato y resultado sellado. Convierte el ensayo en seco en evidencia
+        persistida reutilizando la maquinaria de contraste que ya existe. No depende de
+        nadie.</span></li>
+        <li><span><b>UMD-3 · raíz de jornada.</b> Da un único valor que sellar y cierra el
+        criterio 13 del protocolo de integridad.</span></li>
+        <li><span><b>UMD-4 · anclaje contra autoridad real de la UE.</b> Cierra el criterio 12
+        y la propiedad S-5 de la soberanía. Es la única pieza del núcleo sin contrastar con el
+        mundo.</span></li>
+        <li class="par"><span><b>En paralelo, desde hoy —</b> abrir A-03 (autoridad de
+        sellado), A-06 (protocolo de muestreo), A-01 y A-02 (unidad de ordenación e identidad)
+        y la búsqueda de parcela.</span></li>
+      </ol>
+      <p>Nada de los tres primeros espera al cuarto, y el cuarto no espera a los tres primeros.
+      Ese es todo el plan.</p>
+    </section>
+
+    <div class="closer">
+      <p>Un preprototipo no crece acumulando capacidades. Crece subiendo afirmaciones de nivel
+      de evidencia, una a una, y sabiendo cuáles todavía no lo han hecho.</p>
+      <p class="colophon">
+        CASTÚO-SYSTEM™ SUBER UAV · Plan de crecimiento v0.1 · 2 de septiembre de 2026<br>
+        Fuente en el repositorio: <code>docs/PLAN_CRECIMIENTO.md</code>.
+        Estado real: <code>docs/CASTUO_CORCHO_ESTADO_MAESTRO.md</code> v0.8.<br>
+        Este documento es una captura de trabajo, no la fuente de verdad.
+      </p>
+    </div>
+
+  </main>
+</div>

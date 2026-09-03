@@ -1,0 +1,783 @@
+<title>SUBER UAV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+:root {
+  --paper:      #F4F5F2;
+  --surface:    #FCFCFA;
+  --sunk:       #EBEDE7;
+  --ink:        #16211A;
+  --muted:      #5F6A61;
+  --rule:       #D2D6CF;
+  --rule-soft:  #E2E5DE;
+  --accent:     #2C5340;
+  --accent-dim: #4A7A5F;
+  --alert:      #A33E12;
+  --ok:         #2C5340;
+
+  --sans: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --measure: 66ch;
+  --s1: .35rem; --s2: .7rem; --s3: 1.1rem; --s4: 1.8rem; --s5: 2.8rem; --s6: 4.4rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111512; --surface: #181D19; --sunk: #1E241F;
+    --ink: #E5E9E2; --muted: #96A098; --rule: #2E362F; --rule-soft: #242B25;
+    --accent: #86B99B; --accent-dim: #6E9C82; --alert: #E08050; --ok: #86B99B;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111512; --surface: #181D19; --sunk: #1E241F;
+  --ink: #E5E9E2; --muted: #96A098; --rule: #2E362F; --rule-soft: #242B25;
+  --accent: #86B99B; --accent-dim: #6E9C82; --alert: #E08050; --ok: #86B99B;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--serif); font-size: 16.5px; line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+p { margin: 0 0 var(--s3); max-width: var(--measure); }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+strong { font-weight: 500; }
+code { font-family: var(--mono); font-size: .88em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 var(--s4); }
+
+/* ── cabecera ───────────────────────────────────────────── */
+.masthead { border-bottom: 2px solid var(--ink); padding: var(--s5) 0 var(--s4); }
+.eyebrow {
+  font-family: var(--sans); font-size: .72rem; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+  margin: 0 0 var(--s3);
+}
+h1 {
+  font-family: var(--sans); font-weight: 700; letter-spacing: -.015em;
+  font-size: clamp(2.4rem, 6vw, 4rem); line-height: .98; margin: 0 0 var(--s2);
+  text-wrap: balance;
+}
+h1 .tm { font-size: .38em; vertical-align: super; font-weight: 500; letter-spacing: 0; }
+.deck {
+  font-family: var(--sans); font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-weight: 400; color: var(--muted); max-width: 52ch; margin: 0 0 var(--s4);
+}
+.deck b { color: var(--ink); font-weight: 600; }
+.meta {
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4);
+  font-family: var(--mono); font-size: .74rem; color: var(--muted);
+}
+.meta b { font-weight: 500; color: var(--ink); }
+
+.caveat {
+  margin: var(--s4) 0 0; padding: var(--s3) var(--s3) var(--s3) var(--s4);
+  border-left: 3px solid var(--alert); background: var(--sunk);
+  font-size: .92rem; color: var(--muted);
+}
+.caveat p { margin: 0; max-width: 78ch; }
+.caveat b { color: var(--ink); font-weight: 500; }
+
+/* ── estructura ─────────────────────────────────────────── */
+.doc { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media (min-width: 940px) {
+  .doc { grid-template-columns: 190px minmax(0, 1fr); gap: var(--s6); align-items: start; }
+  .rail { position: sticky; top: var(--s4); padding-top: var(--s6); }
+}
+.rail { font-family: var(--sans); font-size: .82rem; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+.rail a { display: block; color: var(--muted); text-decoration: none; line-height: 1.25; }
+.rail a:hover { color: var(--accent); }
+.rail .n { font-family: var(--mono); font-size: .7rem; color: var(--accent-dim); display: block; }
+.rail hr { border: 0; border-top: 1px solid var(--rule-soft); margin: var(--s2) 0; }
+@media (max-width: 939px) { .rail { display: none; } }
+
+section.page { padding: var(--s6) 0 0; }
+section.page + section.page { border-top: 1px solid var(--rule); }
+.pagehead { display: flex; gap: var(--s3); align-items: baseline; margin-bottom: var(--s4); }
+.pagenum {
+  font-family: var(--mono); font-size: .78rem; color: var(--paper);
+  background: var(--ink); padding: .18rem .5rem; border-radius: 2px; flex: none;
+}
+h2 {
+  font-family: var(--sans); font-weight: 700; letter-spacing: -.01em;
+  font-size: clamp(1.6rem, 3.6vw, 2.3rem); line-height: 1.05; margin: 0;
+  text-wrap: balance;
+}
+h3 {
+  font-family: var(--sans); font-weight: 600; font-size: 1.12rem;
+  letter-spacing: .005em; margin: var(--s5) 0 var(--s2);
+}
+h4 {
+  font-family: var(--sans); font-weight: 600; font-size: .78rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  margin: var(--s4) 0 var(--s2);
+}
+
+.thesis {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.25rem, 3vw, 1.75rem); line-height: 1.34;
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: var(--s4) 0; margin: 0 0 var(--s5); max-width: 30ch;
+}
+.thesis em { font-style: normal; color: var(--accent); }
+
+/* ── léxico ─────────────────────────────────────────────── */
+.lex { display: grid; gap: var(--s3); margin: var(--s3) 0 var(--s4); }
+@media (min-width: 720px) { .lex { grid-template-columns: 1fr 1fr; } }
+.lex > div { padding: var(--s3); background: var(--surface); border: 1px solid var(--rule-soft); }
+.lex .no { border-top: 3px solid var(--alert); }
+.lex .si { border-top: 3px solid var(--accent); }
+.lex h5 {
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .14em;
+  text-transform: uppercase; margin: 0 0 var(--s2); font-weight: 600;
+}
+.lex .no h5 { color: var(--alert); }
+.lex .si h5 { color: var(--accent); }
+.lex p { margin: 0; font-size: .98rem; }
+
+/* ── frontera ───────────────────────────────────────────── */
+.frontier {
+  display: grid; gap: 1px; margin: var(--s3) 0 var(--s2);
+  grid-template-columns: 1fr; background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+}
+@media (min-width: 700px) { .frontier { grid-template-columns: 1fr 1.1fr 1fr; align-items: stretch; } }
+.frontier > div { background: var(--surface); padding: var(--s3); }
+.frontier .side h5 {
+  font-family: var(--sans); font-size: 1rem; font-weight: 600; margin: 0 0 .25rem;
+}
+.frontier .side span {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .08em;
+  color: var(--muted); display: block; margin-bottom: var(--s2);
+}
+.frontier .side p { margin: 0; font-size: .9rem; color: var(--muted); }
+.frontier .gap { background: var(--sunk); text-align: center; }
+.frontier .gap .arrow {
+  font-family: var(--mono); color: var(--accent); font-size: .9rem; letter-spacing: .1em;
+  display: block; margin-bottom: var(--s2);
+}
+.frontier .gap p { margin: 0 auto; font-size: .9rem; max-width: 34ch; }
+
+/* ── capas ──────────────────────────────────────────────── */
+.layers { display: grid; gap: 2px; margin: var(--s3) 0 var(--s4); }
+.layer {
+  display: grid; grid-template-columns: 2.4rem 1fr; gap: var(--s3);
+  padding: var(--s3); background: var(--surface); border: 1px solid var(--rule-soft);
+  align-items: start;
+}
+.layer .lnum { font-family: var(--mono); font-size: .74rem; color: var(--muted); padding-top: .15rem; }
+.layer h5 {
+  font-family: var(--sans); font-size: 1rem; font-weight: 600; margin: 0 0 .2rem;
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2);
+}
+.layer p { margin: 0; font-size: .94rem; color: var(--muted); max-width: 70ch; }
+.layer.built { background: var(--sunk); border-color: var(--rule); }
+
+/* ── etiquetas ──────────────────────────────────────────── */
+.tag {
+  font-family: var(--sans); font-size: .66rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .12rem .42rem; border: 1px solid currentColor; border-radius: 2px;
+  white-space: nowrap;
+}
+.tag.built { color: var(--ok); }
+.tag.part  { color: var(--muted); border-style: dashed; }
+.tag.none  { color: var(--alert); border-style: dotted; }
+
+/* ── fortalezas ─────────────────────────────────────────── */
+.strengths { display: grid; gap: 2px; margin: var(--s3) 0 var(--s3); }
+@media (min-width: 760px) { .strengths { grid-template-columns: 1fr 1fr; } }
+.st {
+  background: var(--surface); border: 1px solid var(--rule-soft);
+  padding: var(--s3); display: flex; flex-direction: column; gap: var(--s2);
+}
+.st .top { display: flex; align-items: baseline; gap: var(--s2); }
+.st .id { font-family: var(--mono); font-size: .7rem; color: var(--muted); }
+.st .eq {
+  font-family: var(--mono); font-size: .66rem; font-weight: 500; margin-left: auto;
+  border: 1px solid var(--accent); color: var(--accent);
+  padding: .05rem .35rem; border-radius: 2px; white-space: nowrap;
+}
+.st .eq.design { border-color: var(--muted); color: var(--muted); border-style: dashed; }
+.st h5 { font-family: var(--sans); font-size: 1.02rem; font-weight: 600; margin: 0; line-height: 1.25; }
+.st p { margin: 0; font-size: .9rem; color: var(--muted); }
+.st p b { color: var(--ink); font-weight: 500; }
+
+/* ── cadena ─────────────────────────────────────────────── */
+.chain {
+  display: flex; flex-wrap: nowrap; align-items: stretch;
+  margin: var(--s3) 0 var(--s2); border: 1px solid var(--rule-soft);
+  background: var(--surface); overflow-x: auto;
+}
+.link { flex: 1 0 auto; min-width: 108px; padding: var(--s3) var(--s2); text-align: center; border-right: 1px solid var(--rule-soft); }
+.link:last-child { border-right: 0; }
+.link .lbl { font-family: var(--sans); font-size: .82rem; font-weight: 600; display: block; margin-bottom: .3rem; }
+.link .stt { font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; }
+.link.has .stt { color: var(--ok); }
+.link.no { background: var(--sunk); }
+.link.no .lbl { color: var(--muted); }
+.link.no .stt { color: var(--alert); }
+
+/* ── tablas ─────────────────────────────────────────────── */
+.tablewrap { overflow-x: auto; margin: var(--s3) 0 var(--s4); border-bottom: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; min-width: 460px; }
+caption {
+  text-align: left; font-family: var(--sans); font-size: .78rem; color: var(--muted);
+  padding-bottom: var(--s2); letter-spacing: .04em;
+}
+th, td { text-align: left; padding: .52rem var(--s3) .52rem 0; vertical-align: top; }
+thead th {
+  font-family: var(--sans); font-size: .7rem; font-weight: 600; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--ink); padding-bottom: var(--s1);
+}
+tbody tr { border-bottom: 1px solid var(--rule-soft); }
+tbody tr:last-child { border-bottom: 0; }
+td.code, th.code { font-family: var(--mono); font-size: .8rem; white-space: nowrap; }
+td.num { font-variant-numeric: tabular-nums; }
+
+.tally { display: grid; gap: 2px; grid-template-columns: repeat(3, 1fr); margin: var(--s3) 0 var(--s4); }
+.tally div { padding: var(--s3); background: var(--surface); border: 1px solid var(--rule-soft); }
+.tally .fig { font-family: var(--sans); font-weight: 700; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; display: block; }
+.tally .cap { font-family: var(--sans); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: var(--s1); display: block; }
+.tally .b .fig { color: var(--ok); }
+.tally .n .fig { color: var(--alert); }
+
+/* ── pilotos ────────────────────────────────────────────── */
+.pilot { border-top: 1px solid var(--rule); padding-top: var(--s3); margin-top: var(--s4); }
+.pilot:first-of-type { border-top: 0; }
+.pilothead { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); align-items: baseline; }
+.pilothead h3 { margin: 0; }
+.gate { font-family: var(--mono); font-size: .72rem; color: var(--accent); border: 1px solid var(--accent); padding: .1rem .4rem; border-radius: 2px; }
+.q { font-family: var(--sans); font-size: 1.02rem; color: var(--ink); margin: var(--s2) 0 var(--s3); max-width: 60ch; }
+dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--s1) var(--s3); margin: 0 0 var(--s3); font-size: .93rem; }
+dl.facts dt { font-family: var(--sans); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: .22rem; }
+dl.facts dd { margin: 0; }
+.notyet { color: var(--alert); }
+
+.closer { margin: var(--s6) 0 0; border-top: 2px solid var(--ink); padding: var(--s4) 0 var(--s6); }
+.closer p { font-family: var(--serif); font-style: italic; font-size: clamp(1.1rem, 2.6vw, 1.5rem); line-height: 1.4; max-width: 34ch; margin: 0; }
+.colophon { font-family: var(--mono); font-size: .7rem; color: var(--muted); margin-top: var(--s4); line-height: 1.7; }
+.pend { font-family: var(--mono); font-size: .78rem; color: var(--alert); }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">CASTÚO-SYSTEM · Documento de posicionamiento · v0.2</p>
+    <h1>SUBER UAV<span class="tm">™</span></h1>
+    <p class="deck">Sistema de diagnóstico y trazabilidad digital del alcornocal.
+    <b>Fase exterior</b> a la arquitectura de CASTÚO-SYSTEM, y banco de prueba de su soberanía
+    del dato.</p>
+    <div class="meta">
+      <span><b>Fecha</b> 2 sep 2026</span>
+      <span><b>Encaje</b> exterior · ADR-031</span>
+      <span><b>Estado</b> pre-prototipo</span>
+      <span><b>Evidencia</b> 265 pruebas</span>
+      <span><b>Horizonte</b> saca de 2027</span>
+    </div>
+    <div class="caveat">
+      <p><b>Lo que este documento no es.</b> Ninguna capacidad marcada como compromiso está
+      validada. No hay vuelos de ensayo, ni datos de campo verificados, ni autorización de vuelo,
+      ni acuerdo con ninguna organización citada. Lo que sí está probado va con su nivel de
+      evidencia (EQ1–EQ6); lo que no lo tiene se presenta como decisión de diseño. Los huecos van
+      señalados: son tareas, no adornos.</p>
+    </div>
+  </header>
+
+  <div class="doc">
+
+    <nav class="rail" aria-label="Índice">
+      <ol>
+        <li><a href="#p1"><span class="n">01</span>Propuesta de valor</a></li>
+        <li><a href="#p2"><span class="n">02</span>Arquitectura funcional</a></li>
+        <li><a href="#p3"><span class="n">03</span>Piloto mínimo viable</a></li>
+      </ol>
+      <hr>
+      <ol>
+        <li><a href="#exterior"><span class="n">§</span>Fase exterior</a></li>
+        <li><a href="#lexico"><span class="n">§</span>Léxico</a></li>
+        <li><a href="#fuerza"><span class="n">§</span>Fortalezas</a></li>
+        <li><a href="#soberania"><span class="n">§</span>Soberanía S-1…S-6</a></li>
+        <li><a href="#modelo"><span class="n">§</span>Modelo de datos</a></li>
+        <li><a href="#compromisos"><span class="n">§</span>Compromisos</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+      <!-- ══ 1 ══ -->
+      <section class="page" id="p1">
+        <div class="pagehead"><span class="pagenum">01</span><h2>Propuesta de valor</h2></div>
+
+        <p class="thesis">El dron no es el producto. Es <em>un sensor dentro de una
+        infraestructura de evidencia</em> para el alcornocal, capaz de complementar la
+        metodología experta, no de sustituirla.</p>
+
+        <p>Presentar un dron con cámara multiespectral es competir en un mercado de agricultura
+        de precisión ya poblado, con un argumento —más resolución, más hectáreas por hora— que
+        cualquiera iguala comprando el mismo sensor. El activo de SUBER UAV no es el vuelo: es
+        la serie temporal georreferenciada por pie, el vínculo árbol → lote → resultado
+        industrial, y la evidencia verificable de que ese vínculo no se ha tocado.</p>
+
+        <h3 id="exterior">Una fase exterior, y a propósito</h3>
+
+        <p>SUBER UAV no forma parte de los treinta y seis módulos de CASTÚO-SYSTEM. Es una fase y
+        una etapa <strong>exterior</strong> a esa arquitectura, con despliegue, calendario
+        —el del monte— y frontera propios. Lo que entrega no es una escritura en la base de datos
+        de la plataforma: es un paquete verificable con formato declarado.</p>
+
+        <div class="frontier">
+          <div class="side">
+            <h5>SUBER UAV</h5>
+            <span>FASE EXTERIOR</span>
+            <p>Captura, ordenación, sello y exportación. Despliegue propio, cadencia del monte.</p>
+          </div>
+          <div class="gap">
+            <span class="arrow">──── paquete verificable ────▸</span>
+            <p>Formato declarado, canonicalización versionada, cadena de hashes y sello.
+            Se comprueba <strong>sin acceder a ninguno de los dos lados</strong>.</p>
+          </div>
+          <div class="side">
+            <h5>CASTÚO-SYSTEM</h5>
+            <span>PLATAFORMA</span>
+            <p>Consume la evidencia. No escribe en SUBER UAV, ni SUBER UAV en ella.</p>
+          </div>
+        </div>
+
+        <p>Cuatro consecuencias, todas de ingeniería antes que de discurso. <strong>Aislamiento
+        de fallo:</strong> un demostrador que aún no ha volado no puede desestabilizar una
+        plataforma en producción, ni al revés. <strong>Cadencia propia:</strong> la saca ocurre
+        entre junio y agosto y no se aplaza por un ciclo de versión. <strong>Contrato
+        explícito:</strong> al ser exterior, la interfaz tiene que declararse, y eso es
+        justamente lo que hace la evidencia portátil. <strong>Reversibilidad:</strong> si el
+        piloto no confirma sus hipótesis, no hay nada que deshacer dentro de la plataforma.</p>
+
+        <p>Y una quinta, que es la que importa a medio plazo: <strong>el dato de monte no queda
+        cautivo de la plataforma que lo consume.</strong> Los paquetes emitidos siguen siendo
+        verificables aunque SUBER UAV desaparezca, aunque la plataforma cambie por dentro, y
+        aunque el propietario forestal se lleve su información a otra parte.</p>
+
+        <h3 id="lexico">Cómo se describe el sistema</h3>
+        <p>Esta pareja de formulaciones es normativa. Se comprueba de forma automática sobre
+        todos los documentos del proyecto: quien introduce la primera, rompe la batería de
+        pruebas.</p>
+
+        <div class="lex">
+          <div class="no">
+            <h5>No se dice</h5>
+            <!-- lexico:off -->
+            <p>«El dron detecta enfermedades y determina automáticamente la calidad del
+            corcho.»</p>
+            <!-- lexico:on -->
+          </div>
+          <div class="si">
+            <h5>Se dice</h5>
+            <p>«El sistema identifica indicadores de riesgo sanitario y estima variables de
+            interés productivo mediante datos UAV y observaciones de campo, con revisión
+            técnica y trazabilidad de la evidencia.»</p>
+          </div>
+        </div>
+
+        <p>La primera es falsa en dos puntos: un sensor aéreo no diagnostica —registra
+        reflectancia, de la que se derivan indicadores—, y la clase de calidad del corcho
+        (grueso, bueno, flaco, delgado, refugo) se establece por metodología de campo y
+        laboratorio. Es además cara: dicha una vez ante un organismo de investigación,
+        invalida el resto del discurso.</p>
+
+        <h3>Relación con el Plan de Calas</h3>
+        <p>La posición respecto a la metodología del sector es de <strong>extensión, no de
+        sustitución</strong>. La cala sigue siendo la referencia; el sistema la digitaliza, la
+        sitúa en el tiempo y en el espacio, y la conecta con lo que ocurre después.</p>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Reparto de papeles. Origen del dato de la columna izquierda: descripción
+            aportada por el promotor, no verificada contra fuente documental.
+            <span class="pend">[POR CONFIRMAR CON FUENTE]</span></caption>
+            <thead><tr><th>El Plan de Calas aporta</th><th>SUBER UAV aporta</th></tr></thead>
+            <tbody>
+              <tr><td>Verdad de campo medida en el árbol</td><td>Cobertura continua entre calas</td></tr>
+              <tr><td>Metodología aceptada por el sector</td><td>Registro inalterable y verificable de cada observación</td></tr>
+              <tr><td>Serie histórica en construcción</td><td>Georreferenciación, versión de modelo y contraste ciego</td></tr>
+              <tr><td>Clase de calidad asignada por técnico</td><td>El vínculo de esa clase con el lote y con el resultado industrial</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Cuando el sistema y el técnico discrepan, manda el dato del técnico y la discrepancia
+        queda registrada. Ese registro es el material que permite mejorar el modelo, y es la
+        razón de que el orden del sistema se selle <em>antes</em> de conocer el del experto.</p>
+
+        <h4>Lo que el sistema no hace</h4>
+        <p>No propone clases de calidad. No reduce el número de calas. No reemplaza la
+        observación sanitaria del técnico. No corta: el descorche lo siguen haciendo los
+        corcheros a mano, y queda excluida por diseño cualquier tecnología de corte energético
+        sobre el alcornoque.</p>
+      </section>
+
+      <!-- ══ 2 ══ -->
+      <section class="page" id="p2">
+        <div class="pagehead"><span class="pagenum">02</span><h2>Arquitectura funcional</h2></div>
+
+        <p>Cuatro capas. Solo una está construida, y es a propósito la de más abajo: las
+        garantías se prueban una vez y valen para todo lo que se apoye encima.</p>
+
+        <div class="layers">
+          <div class="layer">
+            <span class="lnum">01</span>
+            <div>
+              <h5>Captura <span class="tag part">parcial</span></h5>
+              <p>UAV (RGB, multiespectral, LiDAR), técnico en campo, cala, báscula, fábrica.
+              Toda observación nace con <code>origen ∈ {real, simulado, historico}</code>,
+              obligatorio e inmutable desde la primera migración. Entre vuelo y borde viajan
+              descriptores por árbol, nunca nubes de puntos densas.</p>
+            </div>
+          </div>
+          <div class="layer built">
+            <span class="lnum">02</span>
+            <div>
+              <h5>CASTÚO Evidence Core <span class="tag built">construido</span></h5>
+              <p>FastAPI y PostgreSQL 16. Append-only defendido en tres capas —permisos,
+              disparadores de fila y de sentencia, pruebas de integración contra motor real—,
+              cadena de hashes por dispositivo, canonicalización versionada con dos
+              implementaciones independientes, sello local y anclaje certificado separados,
+              verificador externo que no depende de la aplicación. Es agnóstico del dominio a
+              propósito: no sabe qué es un alcornoque.</p>
+            </div>
+          </div>
+          <div class="layer">
+            <span class="lnum">03</span>
+            <div>
+              <h5>SABIONDA · análisis <span class="tag part">parcial</span></h5>
+              <p>Indicadores, ordenación de unidades por prioridad de intervención y
+              concordancia con el orden del técnico (Spearman y Kendall tau-b, con versión de
+              método declarada). Existe la mecánica; no existe ningún modelo entrenado con
+              datos reales.</p>
+            </div>
+          </div>
+          <div class="layer">
+            <span class="lnum">04</span>
+            <div>
+              <h5>Industria <span class="tag none">no existe</span></h5>
+              <p>Lote, proceso y resultado. Depende de un interlocutor industrial que hoy no
+              hay. Es el objeto del tercer piloto.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 id="fuerza">Fortalezas del preprototipo</h3>
+        <p>Diez, y ninguna enunciada por encima de su nivel de evidencia. Ocho están sostenidas
+        por prueba automatizada contra base de datos real (EQ3); dos son decisiones de diseño y
+        se presentan como tales. Es la diferencia entre un preprototipo y un folleto.</p>
+
+        <div class="strengths">
+          <div class="st">
+            <div class="top"><span class="id">F-01</span><span class="eq">EQ3</span></div>
+            <h5>La evidencia no se puede alterar, y no por norma sino por construcción</h5>
+            <p>Permisos de rol, disparadores de fila y de sentencia —incluido <code>TRUNCATE</code>
+            y las tablas vacías— y pruebas que lo intentan de verdad. <b>Casi todos los sistemas
+            que prometen inmutabilidad la defienden en el código de aplicación, donde un script
+            de mantenimiento la atraviesa sin resistencia.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-02</span><span class="eq">EQ3</span></div>
+            <h5>Un tercero verifica sin acceso al sistema y sin confiar en él</h5>
+            <p>Verificador autónomo, ocho comprobaciones, sin la aplicación ni la base de datos.
+            <b>Convierte «confíe en nosotros» en «compruébelo usted»</b>, y es el mismo argumento
+            para un auditor, un centro de investigación y un comprador industrial.</p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-03</span><span class="eq">EQ3</span></div>
+            <h5>El mismo dato produce siempre el mismo hash</h5>
+            <p>Canonicalización versionada, dos implementaciones independientes y catorce
+            vectores congelados que ambas deben reproducir. <b>Sin determinismo, la verificación
+            de un tercero falla por motivos que nadie sabe explicar.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-04</span><span class="eq">EQ3</span></div>
+            <h5>El sistema se compromete antes de saber el resultado</h5>
+            <p>El orden se congela y se sella; el motor rechaza el orden del experto si no hay
+            sello previo; el umbral se registra antes que los datos. <b>Elimina de raíz la
+            sospecha de haber ajustado el listón después del salto.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-05</span><span class="eq">EQ3</span></div>
+            <h5>Un dato simulado no puede pasar por real</h5>
+            <p>El campo <code>origen</code> es obligatorio, sin nulo e inmutable desde la primera
+            migración, y viaja hasta la exportación. <b>Permite enseñar el bucle completo con
+            datos mixtos sin contaminar nada.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-06</span><span class="eq">EQ3</span></div>
+            <h5>El orden de los hechos no depende del reloj</h5>
+            <p>Secuencia por activo y por dispositivo, continuidad verificada en el motor, y
+            prueba de regresión con dos escritores concurrentes. <b>Nació de un defecto real
+            encontrado y corregido aquí, que es para lo que sirve un preprototipo.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-07</span><span class="eq">EQ3</span></div>
+            <h5>El discurso está vigilado por la batería de pruebas</h5>
+            <p>Doce patrones prohibidos, exención explícita para citarlos, veinte pruebas.
+            <b>Detectó tres infracciones en la primera redacción de estos mismos documentos,
+            escritos por quien acababa de redactar la norma.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-08</span><span class="eq">EQ3</span></div>
+            <h5>El sistema se levanta desde cero y da el mismo resultado</h5>
+            <p>Migraciones numeradas reproducibles, esquema recreado en cada prueba, dos guiones
+            de demostración de extremo a extremo. <b>Un preprototipo que solo funciona en la
+            máquina de quien lo escribió no es un preprototipo.</b></p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-09</span><span class="eq design">decisión de diseño</span></div>
+            <h5>El núcleo no depende del corcho</h5>
+            <p>El esquema no nombra ninguna entidad del sector. <b>Las garantías se prueban una
+            vez y valen para todo lo que se apoye encima.</b> Cuesta mantener dos vocabularios.</p>
+          </div>
+          <div class="st">
+            <div class="top"><span class="id">F-10</span><span class="eq design">decisión de diseño</span></div>
+            <h5>La ordenación no llama a ningún servicio de terceros</h5>
+            <p>Pesos declarados y código determinista en el camino crítico. <b>Es la propiedad
+            S-2 de la soberanía, y la que más fácil se pierde en cuanto entra la primera
+            dependencia cómoda.</b></p>
+          </div>
+        </div>
+
+        <h3 id="soberania">Soberanía del dato, desglosada</h3>
+        <p>«Soberanía del dato» dicho sin desglosar no compromete a nada, y un interlocutor
+        técnico lo detecta de inmediato. Para SUBER UAV se descompone en seis propiedades con
+        estado individual. <strong>Tres son hechos probados; dos son decisiones de diseño sin
+        auditar; una está a medias.</strong> Ese reparto es el estado real, y es el que se
+        enseña.</p>
+
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th class="code">#</th><th>Propiedad</th><th>Estado hoy</th></tr></thead>
+            <tbody>
+              <tr><td class="code">S-1</td><td>El dato nace y se usa donde se genera</td><td><span class="tag part">decisión de diseño</span></td></tr>
+              <tr><td class="code">S-2</td><td>La inferencia no depende de un proveedor externo</td><td><span class="tag built">hecho</span></td></tr>
+              <tr><td class="code">S-3</td><td>La residencia es europea y conocida</td><td><span class="tag part">sin auditar</span></td></tr>
+              <tr><td class="code">S-4</td><td>La verificación no exige confiar en el sistema</td><td><span class="tag built">hecho</span></td></tr>
+              <tr><td class="code">S-5</td><td>Sin red pública ni jurisdicción ajena</td><td><span class="tag built">decidido</span></td></tr>
+              <tr><td class="code">S-6</td><td>Las personas no quedan atrapadas en el asiento</td><td><span class="tag none">a medias</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>La exterioridad refuerza las seis. Un módulo dentro de una plataforma hereda sus
+        supuestos de despliegue —base de datos compartida, autenticación central, cola común— y
+        cada uno de ellos es una conexión que en el monte no existe. Auditar la residencia de una
+        plataforma de treinta y seis módulos es un proyecto; auditar la de SUBER UAV es una
+        tarde, y esa auditoría sería la primera evidencia de residencia real que tenga la casa.
+        Por la misma razón <strong>la autoridad de sellado temporal deberá estar en la UE</strong>:
+        una autoridad fuera de ella reintroduciría por la puerta de atrás lo que se evitó por la
+        de delante.</p>
+
+        <h3>La cadena monte → fábrica</h3>
+        <div class="chain">
+          <div class="link has"><span class="lbl">árbol</span><span class="stt">parcial</span></div>
+          <div class="link has"><span class="lbl">observación UAV</span><span class="stt">parcial</span></div>
+          <div class="link no"><span class="lbl">cala</span><span class="stt">ausente</span></div>
+          <div class="link no"><span class="lbl">clase de calidad</span><span class="stt">ausente</span></div>
+          <div class="link has"><span class="lbl">saca</span><span class="stt">parcial</span></div>
+          <div class="link no"><span class="lbl">lote</span><span class="stt">ausente</span></div>
+          <div class="link no"><span class="lbl">proceso</span><span class="stt">ausente</span></div>
+          <div class="link no"><span class="lbl">resultado</span><span class="stt">ausente</span></div>
+        </div>
+
+        <p>Es la razón de ser del sistema y también su afirmación más delicada, porque dos
+        objetivos suenan igual y no lo son.</p>
+
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th></th><th>Trazabilidad</th><th>Correlación</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Qué es</th><td>Que la cadena esté registrada y sea verificable</td><td>Que las variables de monte expliquen el resultado industrial</td></tr>
+              <tr><th scope="row">Qué exige</th><td>Un eslabón por evento, sin huecos</td><td>Varias campañas y varianza suficiente</td></tr>
+              <tr><th scope="row">Cuándo</th><td>Campaña 2027</td><td class="notyet">No antes de varias campañas</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>El piloto de 2027 cierra la trazabilidad, no la correlación.</strong>
+        Presentar la segunda como resultado del primer piloto es la sobreafirmación más probable
+        de este proyecto, después de la frase del apartado anterior.</p>
+
+        <h3 id="modelo">Modelo de datos sectorial</h3>
+        <p>Trece entidades de dominio, que son una capa <em>sobre</em> el núcleo y no un
+        rediseño suyo. El núcleo se llama <code>asset</code>, <code>detection</code>,
+        <code>trace_event</code>; el dominio se llama <code>tree</code>,
+        <code>cork_sample</code>, <code>cork_lot</code>. Quien lea las migraciones buscando
+        «cala» no la encuentra, y hace bien en concluir que no existe.</p>
+
+        <div class="tally">
+          <div class="b"><span class="fig">1</span><span class="cap">construida</span></div>
+          <div><span class="fig">4</span><span class="cap">parciales</span></div>
+          <div class="n"><span class="fig">8</span><span class="cap">ausentes</span></div>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Estado entidad por entidad. La única construida es la que sostiene a todas
+            las demás, que es el orden correcto de construcción y no autoriza a decir que el
+            modelo esté implementado.</caption>
+            <thead><tr><th class="code">Entidad</th><th>Qué es</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td class="code">forest_asset</td><td>Finca, monte o rodal</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">tree</td><td>Alcornoque individual</td><td><span class="tag part">parcial</span></td></tr>
+              <tr><td class="code">uav_mission</td><td>Vuelo: plan, sensores, condiciones</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">uav_observation</td><td>Descriptor por árbol derivado del vuelo</td><td><span class="tag part">parcial</span></td></tr>
+              <tr><td class="code">field_observation</td><td>Observación del técnico en campo</td><td><span class="tag part">parcial</span></td></tr>
+              <tr><td class="code">cork_sample</td><td>La cala: ventana abierta y medida</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">quality_assessment</td><td>Clase asignada, con método y autoría</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">sanitary_assessment</td><td>Valoración sanitaria del pie</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">harvest_event</td><td>La saca de un árbol</td><td><span class="tag part">parcial</span></td></tr>
+              <tr><td class="code">cork_lot</td><td>Lote o pila</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">industrial_process</td><td>Proceso en fábrica sobre un lote</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">industrial_result</td><td>Rendimiento, distribución, mermas</td><td><span class="tag none">ausente</span></td></tr>
+              <tr><td class="code">evidence_event</td><td>Evento encadenado y verificable</td><td><span class="tag built">construida</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Dos reglas duras del dominio</h4>
+        <p>Una clase de calidad no la firma un modelo: <code>method</code> y
+        <code>assessed_by</code> son obligatorios y no admiten un valor que signifique «el
+        sistema». Y la cala se referencia, nunca se infiere: no hay camino que produzca una
+        <code>cork_sample</code> a partir de datos UAV. Con estas dos restricciones, la
+        formulación prohibida deja de ser sostenible con el propio dato del sistema, que es más
+        fuerte que prohibirla por escrito.</p>
+      </section>
+
+      <!-- ══ 3 ══ -->
+      <section class="page" id="p3">
+        <div class="pagehead"><span class="pagenum">03</span><h2>Piloto mínimo viable</h2></div>
+
+        <p>Tres pilotos escalonados. Cada uno cierra por criterio cumplido, no por calendario, y
+        ninguno empieza antes de que el anterior haya cerrado.</p>
+
+        <div class="pilot">
+          <div class="pilothead">
+            <h3>Piloto 1 · Un rodal, 50–100 árboles</h3>
+            <span class="gate">G1 · captura repetible</span>
+          </div>
+          <p class="q">¿Se puede capturar, identificar y volver a encontrar el mismo árbol en
+          dos momentos distintos?</p>
+          <p>Es el piloto aburrido y es el que decide el proyecto. Sin reidentificación entre
+          campañas no hay serie temporal, y sin serie temporal el resto del sistema es un
+          inventario caro.</p>
+          <dl class="facts">
+            <dt>Cierre</dt><dd>Dos vuelos separados producen el mismo conjunto de pies, con la misma identidad, dentro de la tolerancia pactada de antemano.</dd>
+            <dt>Depende de</dt><dd>Unidad de ordenación (A-01), tipo de marca física (A-02), parcela comprometida.</dd>
+            <dt>No demuestra</dt><dd class="notyet">Nada sanitario, nada productivo, nada de correlación.</dd>
+          </dl>
+          <p><strong>Sobre la cifra.</strong> 50–100 árboles es el tamaño con el que se puede
+          recorrer el rodal a pie y verificar árbol por árbol. No procede de un cálculo de
+          potencia estadística; ese cálculo se hace con el protocolo.
+          <span class="pend">[POR CALCULAR EN F0]</span></p>
+        </div>
+
+        <div class="pilot">
+          <div class="pilothead">
+            <h3>Piloto 2 · UAV → inspección → cala → calidad</h3>
+            <span class="gate">G2 · concordancia sobre umbral</span>
+          </div>
+          <p class="q">¿El indicador derivado del vuelo aporta algo sobre lo que el técnico ya
+          ve, y guarda relación con lo que dice la cala?</p>
+          <p>El motor ya recorre este piloto en seco con datos sintéticos: registra el
+          protocolo, emite el orden del sistema, <strong>rechaza</strong> el orden del experto
+          por no haber sello, sella, admite el orden del experto y calcula el veredicto. Lo que
+          falta no es software: es la parcela, el técnico, las calas y el umbral pactado.</p>
+          <dl class="facts">
+            <dt>Cierre</dt><dd>La concordancia entre el orden del sistema y el del técnico supera el umbral registrado <em>antes</em> de mirar el dato. Fijarlo después es elegir el listón que uno acaba de saltar.</dd>
+            <dt>Depende de</dt><dd>Acuerdo de acceso al protocolo de calas (A-06), protocolo de concordancia y umbral (A-05), escala de clases (A-08).</dd>
+            <dt>No demuestra</dt><dd class="notyet">Que el sistema pueda ocupar el lugar de la cala, ni asignar por su cuenta una clase de calidad.</dd>
+          </dl>
+          <p><strong>Riesgo dominante.</strong> El indicador multiespectral puede no aportar
+          nada sobre el ojo del técnico. Ese resultado es un resultado válido del piloto y hay
+          que poder publicarlo: por eso el valor del sistema se apoya en F-01…F-04, ninguna de
+          las cuales depende de que el indicador funcione.</p>
+        </div>
+
+        <div class="pilot">
+          <div class="pilothead">
+            <h3>Piloto 3 · Árbol → saca → lote → resultado industrial</h3>
+            <span class="gate">G3 · campaña registrada</span>
+          </div>
+          <p class="q">¿Se puede seguir la evidencia sin huecos desde el pie hasta lo que sale
+          de fábrica?</p>
+          <dl class="facts">
+            <dt>Cierre</dt><dd>Cada lote industrial se resuelve hasta los pies que lo componen, y la verificación del paquete exportado no falla.</dd>
+            <dt>Depende de</dt><dd>Interlocutor industrial (A-07), aplicación de campo, marca física superviviente a la saca.</dd>
+            <dt>No demuestra</dt><dd class="notyet">La correlación monte–fábrica.</dd>
+          </dl>
+          <p><strong>Contradicción dicha en voz alta.</strong> Este piloto necesita piezas que
+          hoy están fuera del alcance y un interlocutor que no existe. No es un incremento de la
+          fase actual: lo que corresponde ahora es el modelo de datos y el protocolo de custodia,
+          que se prueban con datos sintéticos sin un solo dispositivo en el tajo.</p>
+        </div>
+
+        <h3 id="compromisos">Compromisos del prototipado</h3>
+        <p>Aquí no hay logros: hay siete compromisos con su nivel de evidencia de destino y la
+        fase en que se cobran. Enunciarlos como capacidades actuales sería exactamente el error
+        que todo este documento existe para impedir.</p>
+
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th class="code">#</th><th>Fortaleza comprometida</th><th>Hoy</th><th>Destino</th><th>Fase</th></tr></thead>
+            <tbody>
+              <tr><td class="code">F-11</td><td>Capturar y reencontrar el mismo pie entre vuelos</td><td>—</td><td class="code">EQ4</td><td class="code">F1 · G1</td></tr>
+              <tr><td class="code">F-12</td><td>Concordancia con el técnico sobre umbral previo</td><td class="code">EQ3 en seco</td><td class="code">EQ4→EQ5</td><td class="code">F2 · G2</td></tr>
+              <tr><td class="code">F-13</td><td>Anclaje temporal por autoridad real, en la UE</td><td>sintético</td><td class="code">EQ2→EQ5</td><td class="code">F1–F2</td></tr>
+              <tr><td class="code">F-14</td><td>Custodia del pie hasta el lote industrial</td><td>—</td><td class="code">EQ4</td><td class="code">F4 · G3</td></tr>
+              <tr><td class="code">F-15</td><td>Operación completa sin cobertura, medida</td><td>diseño</td><td class="code">EQ4</td><td class="code">F1</td></tr>
+              <tr><td class="code">F-16</td><td>Residencia europea e independencia de proveedor, auditadas</td><td>diseño</td><td class="code">EQ5</td><td class="code">F2–F3</td></tr>
+              <tr><td class="code">F-17</td><td>Indicador sanitario que aporte sobre el ojo del técnico</td><td>—</td><td class="code">EQ4</td><td class="code">F2</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>F-17 puede resolverse en negativo</strong>, y el proyecto está construido para
+        sobrevivir a ese resultado. Decirlo de antemano es lo que permite publicarlo sea cual
+        sea.</p>
+
+        <h4>Decisiones abiertas que bloquean el calendario</h4>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th class="code">Cód.</th><th>Decisión</th><th>Bloquea</th></tr></thead>
+            <tbody>
+              <tr><td class="code">A-03</td><td>Autoridad de sellado RFC 3161, obligatoriamente en la UE</td><td>S-5 · F-13</td></tr>
+              <tr><td class="code">A-05</td><td>Protocolo de concordancia y umbral de aceptación</td><td>El criterio de G2</td></tr>
+              <tr><td class="code">A-06</td><td>Acceso al protocolo de calas y a series históricas</td><td>Piloto 2</td></tr>
+              <tr><td class="code">A-07</td><td>Interlocutor industrial para el resultado de fábrica</td><td>Piloto 3</td></tr>
+              <tr><td class="code">A-08</td><td>Escala de clases de calidad que se registra</td><td>Registro de calidad</td></tr>
+              <tr><td class="code">A-09</td><td>Titularidad y licencia del dato de monte</td><td>S-6 · industria</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A-06 y A-07 no son trabajo de ingeniería: son acuerdos con terceros. Es la parte del
+        proyecto que no se resuelve escribiendo código, y por eso encabeza la fase F0.</p>
+      </section>
+
+      <div class="closer">
+        <p>El dron no es el producto; es un sensor dentro de una infraestructura de evidencia
+        para el alcornocal, capaz de complementar la metodología experta, no de sustituirla.</p>
+        <p class="colophon">
+          CASTÚO-SYSTEM™ SUBER UAV · documento de posicionamiento v0.2 · 2 de septiembre de 2026<br>
+          Fase exterior a la arquitectura de CASTÚO-SYSTEM (ADR-031). Frontera: paquete verificable.<br>
+          Fuente de verdad del proyecto: <code>docs/CASTUO_CORCHO_ESTADO_MAESTRO.md</code> v0.6.
+          Este documento es una captura de trabajo.<br>
+          Núcleo de evidencia: 265 pruebas automatizadas contra PostgreSQL 16, migraciones
+          reproducibles desde cero.
+        </p>
+      </div>
+
+    </main>
+  </div>
+</div>
