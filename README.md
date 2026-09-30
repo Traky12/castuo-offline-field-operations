@@ -31,8 +31,8 @@ castuo-offline-field-operations (Edge)
      ├── CASTÚO-SYSTEM (Private Core)
      │      Upstream sync target
      │
-     └── castuo-evolution (Control Plane)
-            Governance & SSOT
+     └── castuo-evolution (experimental)
+            Governance framework — not the current SSOT
 ```
 
 ---
@@ -51,14 +51,14 @@ castuo-offline-field-operations (Edge)
 ## 4. Engineering & Evidence
 Following the **Evidence-First** principle, this repository provides evidence of operational resilience.
 - **Implemented:** Local knowledge base integration and offline navigation prototypes.
-- **Planned:** Full mesh networking protocols and federated field evidence sync.
+- **Planned (TARGET, not a current capability):** Full mesh networking protocols and federated field evidence sync.
 
-Every operational event is logged with provenance data for later validation in **CASTÚO-EVOLUTION**.
+Target: operational events carry provenance data for later validation through the canonical CASTÚO-SYSTEM evidence chain (`Castuo-system/governance/`). `castuo-evolution` is an experimental framework, not the validation authority.
 
 ---
 
 ## 5. Navigation
-[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
+[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance framework (experimental)](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
 
 ---
 
