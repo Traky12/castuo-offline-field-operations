@@ -1,3 +1,9 @@
+<!-- CASTUO:BRAND:START -->
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Traky12/Traky12/main/assets/brand/castuo-system-logo-square.jpg" alt="CASTÚO-SYSTEM official logo" width="180" />
+</p>
+<!-- CASTUO:BRAND:END -->
+
 # 📴 castuo-offline-field-operations — Resilient Field Resilience
 
 ![Status](https://img.shields.io/badge/Status-Active%20Engineering-blue)
@@ -25,14 +31,14 @@ castuo-offline-field-operations acts as the **EDGE** layer for human operations,
 ```text
 castuo-offline-field-operations (Edge)
      │
-     ├── CASTÚO-SYSTEM (Core)
+     ├── castuo-evidence (Public Fabric)
+     │      Evidence verification surface
+     │
+     ├── CASTÚO-SYSTEM (Private Core)
      │      Upstream sync target
      │
-     ├── castuo-agro-edge (Edge)
-     │      Related field stack
-     │
-     └── GOLDfish (Assurance)
-            Security & validation gate
+     └── castuo-evolution (experimental)
+            Governance framework — not the current SSOT
 ```
 
 ---
@@ -51,14 +57,14 @@ castuo-offline-field-operations (Edge)
 ## 4. Engineering & Evidence
 Following the **Evidence-First** principle, this repository provides evidence of operational resilience.
 - **Implemented:** Local knowledge base integration and offline navigation prototypes.
-- **Planned:** Full mesh networking protocols and federated field evidence sync.
+- **Planned (TARGET, not a current capability):** Full mesh networking protocols and federated field evidence sync.
 
-Every operational event is logged with provenance data for later validation in **CASTÚO-EVOLUTION**.
+Target: operational events carry provenance data for later validation through the canonical CASTÚO-SYSTEM evidence chain (`Castuo-system/governance/`). `castuo-evolution` is an experimental framework, not the validation authority.
 
 ---
 
 ## 5. Navigation
-[← Ecosystem Profile](https://github.com/Traky12) | [→ Core Platform](https://github.com/Traky12/Castuo-system) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge) | [→ Governance](https://github.com/Traky12/castuo-evolution)
+[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance framework (experimental)](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
 
 ---
 
@@ -78,9 +84,12 @@ This repository is part of the CASTÚO-SYSTEM private-cloud target architecture.
 
 The public state model is `DOCUMENTED` → `IMPLEMENTED_LOCAL` → `TESTED` → `VALIDATED` → `OPERATIONAL`. OpenClaw and n8n, where referenced, are optional compatibility adapters and not the sovereign governance control plane.\n
 
-## Promotion closure / Cierre de promoción
+<!-- CASTUO:PUBLIC-SURFACE -->
+## CASTÚO integration boundary
 
-The current CASTÚO posture remains **`PROMOTION = BLOCK` / `LOCAL_RESULT_NO_CLAIM`** until the bounded S-001A slice has an executable contract, portable evidence envelope, independent replay, human review and rollback evidence.
+This repository exposes only a bounded public integration surface. Its role, current state and claims are subordinate to the `Traky12/castuo-evolution` control plane.
 
-La ruta priorizada, los gaps, los riesgos P0 y los gates de salida están documentados en [`docs/CASTUO_PROMOTION_CLOSURE_PLAN.md`](docs/CASTUO_PROMOTION_CLOSURE_PLAN.md). Este repositorio debe conservar estados evidence-scoped y no elevar `LOCAL`, `PENDING` o `EVIDENCE_REQUIRED` a claims de producción, independencia de proveedor o validación independiente.
+This repository does not by itself claim production operation, certification, independent validation, customer contracts, revenue, autonomous authority, global federation or legal compliance. Do not publish secrets, credentials, private endpoints, customer data, private evidence or unpublished security findings.
 
+See [`docs/CASTUO_PUBLIC_SURFACE.md`](docs/CASTUO_PUBLIC_SURFACE.md) for the public boundary. `Claim != Evidence`; `CURRENT != TARGET`; promotion requires control-plane authorization.
+<!-- CASTUO:PUBLIC-SURFACE-END -->
