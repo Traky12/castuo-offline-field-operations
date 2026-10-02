@@ -1,3 +1,9 @@
+<!-- CASTUO:BRAND:START -->
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Traky12/Traky12/main/assets/brand/castuo-system-logo-square.jpg" alt="CASTÚO-SYSTEM official logo" width="180" />
+</p>
+<!-- CASTUO:BRAND:END -->
+
 # 📴 castuo-offline-field-operations — Resilient Field Resilience
 
 ![Status](https://img.shields.io/badge/Status-Active%20Engineering-blue)
@@ -31,8 +37,8 @@ castuo-offline-field-operations (Edge)
      ├── CASTÚO-SYSTEM (Private Core)
      │      Upstream sync target
      │
-     └── castuo-evolution (Control Plane)
-            Governance & SSOT
+     └── castuo-evolution (experimental)
+            Governance framework — not the current SSOT
 ```
 
 ---
@@ -51,14 +57,14 @@ castuo-offline-field-operations (Edge)
 ## 4. Engineering & Evidence
 Following the **Evidence-First** principle, this repository provides evidence of operational resilience.
 - **Implemented:** Local knowledge base integration and offline navigation prototypes.
-- **Planned:** Full mesh networking protocols and federated field evidence sync.
+- **Planned (TARGET, not a current capability):** Full mesh networking protocols and federated field evidence sync.
 
-Every operational event is logged with provenance data for later validation in **CASTÚO-EVOLUTION**.
+Target: operational events carry provenance data for later validation through the canonical CASTÚO-SYSTEM evidence chain (`Castuo-system/governance/`). `castuo-evolution` is an experimental framework, not the validation authority.
 
 ---
 
 ## 5. Navigation
-[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
+[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance framework (experimental)](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
 
 ---
 
@@ -78,10 +84,12 @@ This repository is part of the CASTÚO-SYSTEM private-cloud target architecture.
 
 The public state model is `DOCUMENTED` → `IMPLEMENTED_LOCAL` → `TESTED` → `VALIDATED` → `OPERATIONAL`. OpenClaw and n8n, where referenced, are optional compatibility adapters and not the sovereign governance control plane.\n
 
-## CASTÚO evidence-scoped integration
+<!-- CASTUO:PUBLIC-SURFACE -->
+## CASTÚO integration boundary
 
-See the [ecosystem integration record](docs/CASTUO_ECOSYSTEM_INTEGRATION_2026-08-22.md) for the current capability, evidence, security and promotion boundary.
+This repository exposes only a bounded public integration surface. Its role, current state and claims are subordinate to the `Traky12/castuo-evolution` control plane.
 
-## CASTÚO Deep Audit — 2026-08-22
+This repository does not by itself claim production operation, certification, independent validation, customer contracts, revenue, autonomous authority, global federation or legal compliance. Do not publish secrets, credentials, private endpoints, customer data, private evidence or unpublished security findings.
 
-This repository received the second evidence-scoped ecosystem audit. The local audit record is [CASTUO_DEEP_AUDIT_2026-08-22.md](docs/CASTUO_DEEP_AUDIT_2026-08-22.md). This link records traceability only; it does not claim production readiness, certification, field validation or independent review.
+See [`docs/CASTUO_PUBLIC_SURFACE.md`](docs/CASTUO_PUBLIC_SURFACE.md) for the public boundary. `Claim != Evidence`; `CURRENT != TARGET`; promotion requires control-plane authorization.
+<!-- CASTUO:PUBLIC-SURFACE-END -->
