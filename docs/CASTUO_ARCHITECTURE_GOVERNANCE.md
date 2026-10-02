@@ -5,7 +5,8 @@
 - **Role:** FIELD_OPERATIONS
 - **Function:** Operaciones de campo, continuidad y conocimiento local
 - **Repository visibility:** PUBLIC
-- **Control plane:** [`castuo-evolution`](https://github.com/Traky12/castuo-evolution)
+- **Canonical governance:** `Castuo-system/governance/` (private; current technical authority)
+- **Experimental governance framework:** [`castuo-evolution`](https://github.com/Traky12/castuo-evolution) — not the current source of truth or a deployed control plane
 - **Public evidence index:** [`Traky12/Traky12`](https://github.com/Traky12/Traky12)
 - **Evidence Center:** [`evidence-center`](https://github.com/Traky12/Traky12/tree/main/evidence-center)
 
