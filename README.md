@@ -1,3 +1,9 @@
+<!-- CASTUO:BRAND:START -->
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Traky12/Traky12/main/assets/brand/castuo-system-logo-square.jpg" alt="CASTÚO-SYSTEM official logo" width="180" />
+</p>
+<!-- CASTUO:BRAND:END -->
+
 # 📴 castuo-offline-field-operations — Resilient Field Resilience
 
 ![Status](https://img.shields.io/badge/Status-Active%20Engineering-blue)
@@ -25,14 +31,14 @@ castuo-offline-field-operations acts as the **EDGE** layer for human operations,
 ```text
 castuo-offline-field-operations (Edge)
      │
-     ├── CASTÚO-SYSTEM (Core)
+     ├── castuo-evidence (Public Fabric)
+     │      Evidence verification surface
+     │
+     ├── CASTÚO-SYSTEM (Private Core)
      │      Upstream sync target
      │
-     ├── castuo-agro-edge (Edge)
-     │      Related field stack
-     │
-     └── GOLDfish (Assurance)
-            Security & validation gate
+     └── castuo-evolution (experimental)
+            Governance framework — not the current SSOT
 ```
 
 ---
@@ -51,14 +57,14 @@ castuo-offline-field-operations (Edge)
 ## 4. Engineering & Evidence
 Following the **Evidence-First** principle, this repository provides evidence of operational resilience.
 - **Implemented:** Local knowledge base integration and offline navigation prototypes.
-- **Planned:** Full mesh networking protocols and federated field evidence sync.
+- **Planned (TARGET, not a current capability):** Full mesh networking protocols and federated field evidence sync.
 
-Every operational event is logged with provenance data for later validation in **CASTÚO-EVOLUTION**.
+Target: operational events carry provenance data for later validation through the canonical CASTÚO-SYSTEM evidence chain (`Castuo-system/governance/`). `castuo-evolution` is an experimental framework, not the validation authority.
 
 ---
 
 ## 5. Navigation
-[← Ecosystem Profile](https://github.com/Traky12) | [→ Core Platform](https://github.com/Traky12/Castuo-system) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge) | [→ Governance](https://github.com/Traky12/castuo-evolution)
+[← Profile](https://github.com/Traky12) | [→ Evidence](https://github.com/Traky12/castuo-evidence) | [→ Governance framework (experimental)](https://github.com/Traky12/castuo-evolution) | [→ Agro Edge](https://github.com/Traky12/castuo-agro-edge)
 
 ---
 
@@ -87,43 +93,3 @@ This repository does not by itself claim production operation, certification, in
 
 See [`docs/CASTUO_PUBLIC_SURFACE.md`](docs/CASTUO_PUBLIC_SURFACE.md) for the public boundary. `Claim != Evidence`; `CURRENT != TARGET`; promotion requires control-plane authorization.
 <!-- CASTUO:PUBLIC-SURFACE-END -->
-
-<!-- CASTUO:PUBLIC-GOVERNANCE:START -->
-## CASTÚO-SYSTEM governed public surface
-
-**Repository role:** `FIELD APPLICATION`<br>
-**Scope statement:** Bounded field workflows, offline continuity and evidence export; measured operation remains pending.
-**Public state:** `EVIDENCE-SCOPED · STAGING-CANDIDATE · PROMOTION-BLOCKED`
-
-This repository is a governed surface of CASTÚO-SYSTEM. The canonical governance source is [`castuo-evolution`](https://github.com/Traky12/castuo-evolution); the public Knowledge & Evidence Index is a read-model. Repository activity, a README, commit, pull request or passing local workflow does not by itself establish remote operation, production, certification, customers, revenue or regulatory conformity.
-
-**Boundary:** Field capability / pilot evidence pending.
-
-| Layer | Public meaning |
-|---|---|
-| Documented | Scope, design or policy is described. |
-| Implemented local | Implementation exists within declared local scope. |
-| Tested local | A local test passed within its declared scope. |
-| Evidence-scoped | Evidence surfaces and limitations are identified. |
-| Operational / production | `NOT_CLAIMED` unless separately evidenced and reviewed. |
-
-For public navigation use the [Traky12 profile](https://github.com/Traky12/Traky12), the [Evidence Center](https://github.com/Traky12/Traky12/tree/proof-matrix-profile/docs/evidence) and the [Public Knowledge & Evidence Index](https://castuo-system.es/).
-
-`Identity != Documentation != Evidence != Execution != Review != Promotion`
-<!-- CASTUO:PUBLIC-GOVERNANCE:END -->
-
-## CASTÚO-SYSTEM public governance boundary
-
-**Role / Rol:** `FIELD / CONTINUITY`
-
-> NO CLAIM WITHOUT PROVENANCE.
->
-> NINGÚN CLAIM SIN PROVENIENCIA.
-
-This repository covers offline-first field continuity. Field capability remains documented or targeted unless reproducible evidence is declared.
-
-Este repositorio cubre continuidad field offline-first. La capacidad permanece documentada u objetivo salvo evidencia reproducible declarada.
-
-The canonical meaning and promotion rules remain in [`castuo-evolution`](https://github.com/Traky12/castuo-evolution). The public profile is a read-model; this repository does not authorize promotion. Public state remains `EVIDENCE-SCOPED · STAGING-CANDIDATE · PROMOTION-BLOCKED` unless a newer source snapshot explicitly proves otherwise.
-
-La semántica canónica y las reglas de promoción permanecen en [`castuo-evolution`](https://github.com/Traky12/castuo-evolution). El perfil público es un read-model; este repositorio no autoriza la promoción. El estado público permanece `EVIDENCE-SCOPED · STAGING-CANDIDATE · PROMOTION-BLOCKED` salvo que un snapshot posterior lo demuestre explícitamente.
