@@ -14,6 +14,14 @@
 
 ---
 
+## Architectural identity
+
+- **Architectural name:** `castuo-field-runtime`
+- **Role:** Offline-first field workflow runtime for continuity, capture, synchronisation and recovery.
+- **Boundary:** Field workflow capability within the declared scope; no production, institutional or independent-validation claim.
+- **Status:** `PENDING`
+- **Quality profile:** [`.castuo/repository-profile.yaml`](.castuo/repository-profile.yaml)
+
 ## 1. Purpose & Scope
 **castuo-offline-field-operations** focuses on the human and operational aspects of field work in disconnected environments. It provides the tools and protocols necessary to maintain operational integrity when cloud access is unavailable.
 
