@@ -7,7 +7,7 @@
 # 📴 castuo-offline-field-operations — Resilient Field Resilience
 
 ![Status](https://img.shields.io/badge/Status-Active%20Engineering-blue)
-![Maturity](https://img.shields.io/badge/Maturity-Implementado-informational)
+![Maturity](https://img.shields.io/badge/Maturity-N2%20Prepared-yellow)
 ![License](https://img.shields.io/badge/License-AGPL--3.0-yellow)
 
 > **Offline-first field operations, local assistance, and resilient communications for CASTÚO-SYSTEM™**
@@ -95,9 +95,26 @@ The public state model is `DOCUMENTED` → `IMPLEMENTED_LOCAL` → `TESTED` → 
 <!-- CASTUO:PUBLIC-SURFACE -->
 ## CASTÚO integration boundary
 
-This repository exposes only a bounded public integration surface. Its role, current state and claims are subordinate to the `Traky12/castuo-evolution` control plane.
+This repository exposes only a bounded public integration surface. Its role, current state and claims are subordinate to canonical `Traky12/Castuo-system` authority; `castuo-evolution` remains experimental.
 
 This repository does not by itself claim production operation, certification, independent validation, customer contracts, revenue, autonomous authority, global federation or legal compliance. Do not publish secrets, credentials, private endpoints, customer data, private evidence or unpublished security findings.
 
 See [`docs/CASTUO_PUBLIC_SURFACE.md`](docs/CASTUO_PUBLIC_SURFACE.md) for the public boundary. `Claim != Evidence`; `CURRENT != TARGET`; promotion requires control-plane authorization.
 <!-- CASTUO:PUBLIC-SURFACE-END -->
+
+<!-- CASTUO:TRACEABILITY:V1:START -->
+## Evidencia offline y gobernanza — contrato pendiente de integración
+
+Esta capa de operaciones humanas offline depende de la autoridad técnica `Traky12/Castuo-system`. `castuo-evolution` es experimental, no fuente alternativa de aprobación.
+
+**Estado comprobable:** documentación y prototipos; sincronización completa Edge → Evidence → E3, validación de campo y revisión independiente `PENDING/BLOCKED`.
+
+- Evento propuesto: `org_id`, `trace_id`, `device_id`, `sequence`, `previous_event_hash`, `event_hash`, `lot_links` y `limitations`. La hora del dispositivo no está atestada.
+- Los duplicados idénticos son idempotentes; los conflictos no se sobrescriben.
+- [e3bundle](https://github.com/Traky12/castuo-e3-001) verifica integridad y firmas Ed25519; **no** demuestra verdad de campo, aprobación humana, certificación ni producción.
+- Liberación, retirada, intervención o certificación requieren decisiones humanas con maker y checker distintos.
+- Objetivo **Six Sigma ≤0,3 DPMO**: NO MEDIDO / NO DEMOSTRADO; no mezclar tests sintéticos con oportunidades independientes.
+- G1/G2, fusión y producción: **BLOCKED** hasta pruebas y autorizaciones independientes.
+
+[Contrato técnico y criterios de aceptación](docs/TRACEABILITY_INTEGRATION_V1.md) · [Manifiesto SHA-256 candidato](SHA256SUMS.json).
+<!-- CASTUO:TRACEABILITY:V1:END -->
