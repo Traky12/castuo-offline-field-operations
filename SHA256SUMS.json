@@ -1,0 +1,122 @@
+{
+  "schema": "castuo.sha256-manifest.v1",
+  "scope": "complete_repository_tree_candidate",
+  "base_commit": "7ffbc200a3fe58f09bd550d3f65c5c5df89afc16",
+  "file_count": 27,
+  "algorithm": "SHA-256",
+  "global_sha256": "4aa19776876288e3f35cfa69e3b53e1e0c427502b31233b85c209fad1984b54f",
+  "aggregation": "SHA256(concat(sorted(relative-path UTF-8 + NUL + per-file SHA256 hex + LF)))",
+  "self_excluded": true,
+  "gitlinks": [],
+  "promotion": "BLOCKED",
+  "files": [
+    {
+      "path": ".castuo/repository-profile.yaml",
+      "sha256": "51dcf72b5912e573a13832a051a35afda2113c401fcc2479870c0f07d78ccf1a"
+    },
+    {
+      "path": ".github/CODEOWNERS",
+      "sha256": "94c9523f0d58ce093b117267caaf8cb48437788d08afd6ff7ff26114325ed5a1"
+    },
+    {
+      "path": ".github/dependabot.yml",
+      "sha256": "c4aed7cf542077ddebd4225bd9462b024643d6506768b97223fca500137ad1db"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "sha256": "cff53682e43bdc1b69e7e12cc29f623d055f336b5436772dad3f67372db8d9bc"
+    },
+    {
+      "path": ".github/workflows/castuo-architecture-surface-check.yml",
+      "sha256": "1df0803f06eb1b6232c79d8a3351434a7bbbb5896b18fef31c5b82166bb013a2"
+    },
+    {
+      "path": ".github/workflows/castuo-brand-surface.yml",
+      "sha256": "5d2f6f5abadef34e5e2fe507c2237a49dc456865a872c20e5744ffcd2fe006d3"
+    },
+    {
+      "path": ".github/workflows/castuo-v1-repository-conformance.yml",
+      "sha256": "9a73764dcc3977e57325f40f6cf779c5132ac8e06dd0c9de72862b3744e2f06b"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "7e5e746a614a54469019b8060a84407c98378291d142ebb4e2b984476c8bc909"
+    },
+    {
+      "path": ".github/workflows/secret-scan.yml",
+      "sha256": "625cd33b0df925b7fb3b56773ddca01e4426a676f35e20b2c69d3dd7791bc65a"
+    },
+    {
+      "path": ".gitleaks.toml",
+      "sha256": "db9b5b468277d16e8d35cad2ee989c7d07000b03cb5b9212fb6e99b7057a9cfb"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "README.md",
+      "sha256": "9c02987fad9206f9c8d82080b02406aaf09c5de7fa75f7c26bb6dcd026d0d3fe"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "c1a910fe77e1ddb2823a411577cb33ce12b1fd505b1506741dc2204c9b37f1e9"
+    },
+    {
+      "path": "docs/CASTUO_ARCHITECTURE_GOVERNANCE.md",
+      "sha256": "e9bb675b8b9b9aba99559170c9442d8b2b78218a1398d49954ec04b14717cc26"
+    },
+    {
+      "path": "docs/CASTUO_BRAND_SURFACE.md",
+      "sha256": "dad32859ef79ea4adf162916e5205b7099b2ab5bfce8be50a724bf74ac7fc6e6"
+    },
+    {
+      "path": "docs/CASTUO_DEEP_AUDIT_2026-08-22.md",
+      "sha256": "32905d740c870db5612f55a7968d48428e246d3fd2964c856738eca74807f487"
+    },
+    {
+      "path": "docs/CASTUO_ECOSYSTEM_INTEGRATION_2026-08-22.md",
+      "sha256": "c94b4e66ba1b745774d2717666570032797a1db5fe699071f6fddd41d60a8052"
+    },
+    {
+      "path": "docs/CASTUO_PROMOTION_CLOSURE_PLAN.md",
+      "sha256": "218ebaed359cc6ab88d0cfce420f1dcd8ee2b1d1c720f8ed55fd25af2db60fdf"
+    },
+    {
+      "path": "docs/CASTUO_PUBLIC_SURFACE.md",
+      "sha256": "cb376fe86f4d1929894d4e80534d12c954d8ae070bbf468088214ec98f649246"
+    },
+    {
+      "path": "docs/TRACEABILITY_INTEGRATION_V1.md",
+      "sha256": "5149ee413e69055cca122656a58113cb4edcdb4fa3fb5a40d3801c630abe0523"
+    },
+    {
+      "path": "docs/castuo-system-integration.md",
+      "sha256": "4dabf3329149c680e2effa1b63943a73e5aba024edc9c26cd839794abd392437"
+    },
+    {
+      "path": "docs/governance/CASTUO-ECOSYSTEM-SYNC-2026-08-22.md",
+      "sha256": "516e3e9cb3279aaa03453067eef9ed5ba94e6e144a7899d05fd40bcc5e2e3001"
+    },
+    {
+      "path": "governance/castuo-integration.yaml",
+      "sha256": "c9d847b48630d9e1917b7fb896cea086583f22e556c0bb922bc83795fc8917fa"
+    },
+    {
+      "path": "governance/castuo-standard-reference.yaml",
+      "sha256": "d0b31959889696289cec930617e1ff5804b9c991156644a0585412b1a26b0d0d"
+    },
+    {
+      "path": "governance/s001a/CAP-S001A-OFFLINE-CONTINUITY.yaml",
+      "sha256": "042f7cde58776ad039944848018fb0b913cc21afc1c576364e6d2fe7a8e052e0"
+    },
+    {
+      "path": "governance/s001a/rollback-plan.yaml",
+      "sha256": "668e3458efde906553f59d0857d8fc4b0da98bd567e0f83977000f3c007be8e5"
+    },
+    {
+      "path": "repository.yaml",
+      "sha256": "6a56ddf8b1c5fde69378dc2ef04ba272c9ca6815736284eaa3733f6544cc513e"
+    }
+  ]
+}
