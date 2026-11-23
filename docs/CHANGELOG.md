@@ -11,9 +11,10 @@ Formato: una entrada por bloque de trabajo. Lo más reciente arriba.
   promotor en sesión; revocable. **Sin ejecutar: no se movió ni se subió ningún código.**
 
 **Pendiente**
-- Condiciones previas: confirmar que publicar es aceptable (`castuo-agro-edge` es público),
-  revisar lo que se publicaría y confirmar PostgreSQL 16 en su CI. Sin CI mientras GitHub
-  Actions siga sin arrancar por facturación.
+- Condición 1 cumplida (publicar es aceptable). Condición 2 hecha: `gitleaks` sin fugas, sin datos
+  personales por patrón; falta decidir si `docs/publicaciones/` viaja. Condición 3 abierta: el
+  `tests.yml` de `castuo-agro-edge` no tiene PostgreSQL y solo corre `tests/unit`; hace falta un
+  flujo con `postgres:16`, y GitHub Actions sigue sin arrancar por facturación.
 
 **Siguiente incremento**
 - Ejecutar la mudanza por PR y reejecutar las 284 pruebas; después UMD-3 (raíz de jornada).

@@ -160,7 +160,7 @@ más probable de este proyecto después de la frase prohibida del léxico.
 | A-08 | Escala de clases de calidad que se registra y su versión | F1 | `quality_assessment` |
 | A-09 | Titularidad y licencia del dato de monte | F0, jurídico | Pitch a industria, `forest_asset` |
 | A-10 | Forma de la captura de campo: aplicación nativa o web instalable, ambas offline | F1 | UMD-6, y con ella G3 |
-| A-11 | ~~Dónde vive y se valida el código de SUBER UAV~~ **Decidida 2026-11-23 (ADR-040): se lleva a `castuo-agro-edge`.** Sin ejecutar; condiciones previas en el ADR (publicidad del repositorio, revisión de datos, PostgreSQL 16 en CI) | Antes de cualquier gate de campo | Todo gate con SEV: la mudanza y las 284 pruebas reejecutadas son el siguiente paso |
+| A-11 | ~~Dónde vive y se valida el código de SUBER UAV~~ **Decidida 2026-11-23 (ADR-040): se lleva a `castuo-agro-edge`.** Sin ejecutar. Condiciones (ADR-040): publicar en repositorio público, **cumplida**; revisión de secretos y datos, **hecha** (sin hallazgos; `docs/publicaciones/` por decidir); PostgreSQL 16 en CI, **no cumplida** (falta flujo y Actions no arranca) | Antes de cualquier gate de campo | Todo gate con SEV: la mudanza y las 284 pruebas reejecutadas son el siguiente paso |
 
 A-05 se fija **antes** de mirar ningún dato. Fijarlo después es elegir el listón que uno acaba
 de saltar.

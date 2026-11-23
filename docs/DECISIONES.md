@@ -684,6 +684,22 @@ archivado, porque deja sin hogar con CI justo lo que la validación necesita.
    `castuo-agro-edge` lo provee. Hoy GitHub Actions no arranca por facturación, así que no habría
    CI aunque el flujo esté bien.
 
+**Estado de las condiciones (2026-11-23)**
+1. **Cumplida.** El promotor confirmó en sesión que publicar el código en `castuo-agro-edge`
+   (público) es aceptable.
+2. **Revisión hecha, con dos matices.** `gitleaks git` sobre `b5f23f4` (3 commits, ~586 KB):
+   sin fugas. Búsqueda de patrones de correo, DNI y teléfono en `src`, `tests`, `scripts`,
+   `migrations` y `docs/publicaciones`: sin coincidencias. No hay datos reales de campo: los
+   *fixtures* son sintéticos (`parcela_sintetica.png`, `vuelo_sintetico.json`).
+   Matices: (a) no es una revisión humana del contenido; (b) `docs/publicaciones/` (3 HTML:
+   dossier, protocolo, plan de crecimiento) es posicionamiento, no código; `[PENDIENTE]` decidir
+   si viaja a un repositorio público o se queda fuera de la mudanza.
+3. **No cumplida.** El `tests.yml` de `castuo-agro-edge` usa Python 3.12, no declara servicio
+   de PostgreSQL y solo ejecuta `tests/unit`. Las 284 pruebas de SUBER UAV, que necesitan
+   PostgreSQL 16, **no correrían** con él: hace falta un flujo nuevo con un servicio
+   `postgres:16`. Y GitHub Actions no arranca por facturación, así que no habría ejecución
+   aunque se escriba.
+
 **Consecuencias.** Buenas: una sola fuente por dominio, y un hogar con CI y escaneo de
 secretos para el expediente de los gates. Malas: el trabajo de migración (reubicar rutas y
 reejecutar las 284 pruebas, que hoy están solo «recolectadas») y la dependencia de un
