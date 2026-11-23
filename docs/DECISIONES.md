@@ -618,3 +618,38 @@ de léxico atrapa las formulaciones más peligrosas pero no distingue matices de
 esta tabla se mantiene a mano y puede quedarse desactualizada.
 
 **Revisar.** En cada cierre de gate, junto con `FORTALEZAS.md`.
+
+## ADR-039 — El repositorio canónico de la capacidad offline-first es `castuo-agro-edge`; este repositorio es extracción experimental
+
+**Contexto.** ADR-031 declara SUBER UAV fase exterior a la arquitectura de CASTÚO-SYSTEM, pero
+la incoherencia 3 del estado maestro dejaba el código «en el repositorio de la capacidad por
+comodidad» y daba por pendiente una mudanza sin fecha. Entre tanto, la decisión de
+consolidación del ecosistema del 2026-09-21 (`castuo-system`, `docs/architecture/
+ECOSYSTEM-CONSOLIDATION-DECISIONS-2026-09-21.md`, apartado 2, ítems 1 y 2; registrada en
+`docs/ECOSYSTEM.md`) estableció que el canónico del dominio «offline field operations» es
+`castuo-agro-edge` y que este repositorio pasa a **extracción experimental**, con el commit
+`b5f23f4` (95 archivos, 10.958 líneas añadidas) archivado en `archive/suber-uav-snapshot` y
+**no fusionado a `main`**. El estado maestro v0.8 (2026-09-02) es anterior y no la recoge.
+Verificado el 2026-11-23: `HEAD` del snapshot = `origin/archive/suber-uav-snapshot` =
+`b5f23f4`; `origin/main` (`7ffbc20`) no contiene `docs/DECISIONES.md`, `src/castuo/` ni
+`migrations/`.
+
+**Decisión.** (1) `castuo-agro-edge` rige como repositorio canónico del dominio. (2) Este
+repositorio conserva el código de SUBER UAV solo en la rama de archivo, con estado
+`experiment`. (3) ADR-031 **no cambia**: la exterioridad es respecto de la arquitectura de
+CASTÚO-SYSTEM, no respecto de qué repositorio aloja el trabajo; este ADR aclara el hogar, no
+el encaje. (4) Se registra como decisión **abierta**, y no se resuelve aquí, dónde vive y se
+valida el código de SUBER UAV (A-11).
+
+**Consecuencias.** Hay una sola fuente por dominio en el ecosistema y se evita mantener dos
+repositorios con el mismo propósito. **Lo que cuesta:** el estado maestro, los ADR y las 284
+pruebas viven en un repositorio que ya no es el canónico y cuyo `main` no los contiene, de modo
+que el trabajo de validación no tiene hoy un hogar con integración continua. Además, `main` y
+el snapshot divergen desde `47d3af1`; restaurar uno sobre otro exigirá reconciliar 21 commits
+de gobernanza y de CI.
+
+**Reabre:** la incoherencia 3 del estado maestro (resuelta en v0.6 como encaje, reabierta en
+v0.9 como ubicación).
+
+**Revisar.** Cuando se decida A-11, o antes de intentar cualquier gate de campo, lo que ocurra
+primero. También si `castuo-agro-edge` deja de ser el canónico.

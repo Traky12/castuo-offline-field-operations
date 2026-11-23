@@ -4,6 +4,50 @@ Formato: una entrada por bloque de trabajo. Lo más reciente arriba.
 
 ## [No publicado]
 
+### 2026-11-23 — Contraste con el repositorio y reconciliación documental (estado maestro v0.9)
+
+**Añadido**
+- `docs/DECISIONES.md`: **ADR-039**, el repositorio canónico de la capacidad offline-first es
+  `castuo-agro-edge` y este es extracción experimental. Recoge la decisión del promotor del
+  2026-09-21; no revoca ADR-031.
+- Estado maestro v0.9: D-19, A-11 (dónde vive y se valida el código) e incoherencias 12–16.
+
+**Decidido**
+- Nada nuevo. ADR-039 transcribe una decisión ya tomada; la decisión sobre A-11 queda
+  **abierta** y es del promotor.
+
+**Corregido**
+- **A8-1:** soberanía del dato, de «3 probadas, 2 sin auditar, 1 a medias» a la partición de
+  `SOBERANIA_DEL_DATO.md` §2: 2 hechas, 3 decisión de diseño sin demostrar, 1 parcial.
+- **A8-2:** fortalezas, de «10 (8 en EQ3)» a «11 (9 en EQ3)», que es lo que dicen
+  `FORTALEZAS.md` y `POSICIONAMIENTO_SUBER.md` §13.
+- Las «284 pruebas verdes» pasan a «284 recolectadas»: esta sesión las contó con
+  `pytest --collect-only` y no ejecutó la batería, que requiere PostgreSQL 16.
+- Incoherencia 3: de «resuelta, mudanza sin bloqueo» a encaje resuelto y **ubicación reabierta**.
+- **Corrección a la auditoría de 2026-09-04:** el contraste inicial de esta sesión dio `main`
+  por «solo `LICENSE` y `README.md`» leyendo un `main` local desactualizado. `origin/main`
+  (`7ffbc20`) tiene además gobernanza y CI; sigue sin contener SUBER UAV.
+
+**Pendiente**
+- **A-11**, que bloquea cualquier gate de campo: restaurar el código a `main`, mantenerlo
+  archivado o moverlo. Restaurarlo exige reconciliar 21 commits de gobernanza y CI.
+- Incoherencia 13: marcar `SLICE01.md` (245 pruebas) como histórico. Sin editar en este bloque.
+- Incoherencia 15: S-2 (hecho) frente a F-10 (decisión de diseño). `[POR CONFIRMAR]`
+- Incoherencia 16: replanificar F0–F1; F0 debía cerrar en oct 2026 y no ha cerrado.
+- `CONTEXTO_CONTINUIDAD.md` sigue diciendo «tres probadas, dos sin auditar, una a medias»; no
+  estaba en el plan de archivos de este bloque.
+- Mapa de gates SUBER UAV ↔ `castuo-system/gates/`: propuesto en el repositorio de gobernanza,
+  sin aplicar (incoherencia 14).
+
+**Pruebas**
+- `scripts/check_lexico.py`: 18 archivos revisados, «Sin formulaciones prohibidas».
+- `pytest tests/docs`: 22 pruebas, todas en verde.
+- `pytest --collect-only`: 284 nodos. La batería completa **no se ejecutó**.
+
+**Siguiente incremento**
+- Decidir A-11. Con ella decidida, lo interno accionable sigue siendo UMD-3 (raíz de jornada)
+  y UMD-5 (credenciales); UMD-2 (registrar el protocolo de reidentificación) va antes.
+
 ### 2026-09-02 — Plan de crecimiento y UMD-1: la capa de captura
 
 **Añadido**
