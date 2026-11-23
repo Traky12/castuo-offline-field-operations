@@ -653,3 +653,41 @@ v0.9 como ubicación).
 
 **Revisar.** Cuando se decida A-11, o antes de intentar cualquier gate de campo, lo que ocurra
 primero. También si `castuo-agro-edge` deja de ser el canónico.
+
+## ADR-040 — El código de SUBER UAV se lleva a `castuo-agro-edge` (cierra A-11)
+
+**Estado:** decidida el 2026-11-23, **sin ejecutar**. **Quién decide:** el promotor delegó la
+decisión en sesión («Decide A-11 ahora»); la propuesta y su razonamiento son de Claude. El
+promotor puede revocarla.
+
+**Contexto.** ADR-039 declara canónico a `castuo-agro-edge` y deja este repositorio como
+extracción experimental, con el código solo en `archive/suber-uav-snapshot` (`b5f23f4`). A-11
+preguntaba dónde vive y se valida ese código: restaurarlo a `main` de este repositorio,
+mantenerlo archivado o llevarlo a otro. Verificado con `gh` el 2026-11-23: `castuo-agro-edge`
+es `PUBLIC`, no está archivado, `main` con último push 2026-11-18, y tiene `tests.yml`,
+`secret-scan.yml` y `.gitleaks.toml`.
+
+**Decisión.** El código de SUBER UAV (`src/castuo/`, `migrations/`, `tests/`, `scripts/`) se
+lleva a `castuo-agro-edge`, en un directorio propio de la capacidad y por PR; este repositorio
+conserva su rama de archivo como histórico. Los gates de campo `SUBER-G1…G3` se validan con la
+integración continua de ese repositorio. Se descartan: (a) restaurar a `main` aquí, porque
+contradice ADR-039 y exige reconciliar 21 commits con un repositorio no canónico; (b) mantenerlo
+archivado, porque deja sin hogar con CI justo lo que la validación necesita.
+
+**Condiciones antes de ejecutar** `[PENDIENTE]`
+1. El promotor confirma que publicar el código de SUBER UAV es aceptable: `castuo-agro-edge` es
+   público. Si no lo es, la alternativa es un repositorio privado, no volver a (a) o (b).
+2. Revisión previa de lo que se publicaría: sin datos reales ni referencias a titulares;
+   `owner_ref` es `uuid` seudonimizado, pero nada impide hoy que apunte a datos personales
+   (incoherencia 4).
+3. Las 284 pruebas necesitan PostgreSQL 16; `[POR CONFIRMAR]` que `tests.yml` de
+   `castuo-agro-edge` lo provee. Hoy GitHub Actions no arranca por facturación, así que no habría
+   CI aunque el flujo esté bien.
+
+**Consecuencias.** Buenas: una sola fuente por dominio, y un hogar con CI y escaneo de
+secretos para el expediente de los gates. Malas: el trabajo de migración (reubicar rutas y
+reejecutar las 284 pruebas, que hoy están solo «recolectadas») y la dependencia de un
+repositorio público.
+
+**Revisar.** Al ejecutar la mudanza, si el promotor rechaza la condición 1, o si
+`castuo-agro-edge` deja de ser el canónico.

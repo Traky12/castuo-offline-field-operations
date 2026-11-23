@@ -4,6 +4,20 @@ Formato: una entrada por bloque de trabajo. Lo más reciente arriba.
 
 ## [No publicado]
 
+### 2026-11-23 — A-11 decidida (ADR-040)
+
+**Decidido**
+- ADR-040: el código de SUBER UAV se lleva a `castuo-agro-edge`. Decisión delegada por el
+  promotor en sesión; revocable. **Sin ejecutar: no se movió ni se subió ningún código.**
+
+**Pendiente**
+- Condiciones previas: confirmar que publicar es aceptable (`castuo-agro-edge` es público),
+  revisar lo que se publicaría y confirmar PostgreSQL 16 en su CI. Sin CI mientras GitHub
+  Actions siga sin arrancar por facturación.
+
+**Siguiente incremento**
+- Ejecutar la mudanza por PR y reejecutar las 284 pruebas; después UMD-3 (raíz de jornada).
+
 ### 2026-11-23 — Contraste con el repositorio y reconciliación documental (estado maestro v0.9)
 
 **Añadido**

@@ -8,7 +8,7 @@ de sus treinta y seis módulos. Entrega su resultado como paquete verificable, n
 **Estado de la capacidad (README):** N2 – Prepared · objetivo N5 – Pilot
 **Estado del demostrador:** pre-prototipo, sin vuelos de ensayo.
 Núcleo de evidencia implementado, endurecido y probado con datos sintéticos.
-**Documento:** v0.9 · 2026-11-23
+**Documento:** v0.10 · 2026-11-23
 **Promotor:** CASTÚO-SYSTEM
 
 Este archivo es la fuente de verdad del proyecto entre sesiones. Los artefactos enlazados al
@@ -160,7 +160,7 @@ más probable de este proyecto después de la frase prohibida del léxico.
 | A-08 | Escala de clases de calidad que se registra y su versión | F1 | `quality_assessment` |
 | A-09 | Titularidad y licencia del dato de monte | F0, jurídico | Pitch a industria, `forest_asset` |
 | A-10 | Forma de la captura de campo: aplicación nativa o web instalable, ambas offline | F1 | UMD-6, y con ella G3 |
-| A-11 | Dónde vive y se valida el código de SUBER UAV: restaurarlo a `main` de este repositorio, mantenerlo archivado o llevarlo a otro repositorio. **Decide el promotor** | Antes de cualquier gate de campo | Todo gate con SEV: sin hogar con integración continua no hay expediente reproducible |
+| A-11 | ~~Dónde vive y se valida el código de SUBER UAV~~ **Decidida 2026-11-23 (ADR-040): se lleva a `castuo-agro-edge`.** Sin ejecutar; condiciones previas en el ADR (publicidad del repositorio, revisión de datos, PostgreSQL 16 en CI) | Antes de cualquier gate de campo | Todo gate con SEV: la mudanza y las 284 pruebas reejecutadas son el siguiente paso |
 
 A-05 se fija **antes** de mirar ningún dato. Fijarlo después es elegir el listón que uno acaba
 de saltar.
@@ -276,6 +276,7 @@ modelo sectorial y no depende de ningún tercero.
 | 2026-09-02 | Protocolo de integridad transversal (SUBER UAV + SENDA). ADR-034, D-14, criterio 12. Incoherencias 9–11. |
 | 2026-09-02 | Plan de crecimiento y UMD-1: misión, observación, reidentificación, G1 en seco. ADR-035…ADR-038. D-15…D-18, A-10, criterios 13–14. Incoherencia 6 cerrada. |
 | 2026-11-23 | v0.9. Contraste con el repositorio: conteos de soberanía y fortalezas corregidos (A8-1, A8-2), pruebas «recolectadas» y no «verdes», ADR-039, D-19, A-11. Incoherencia 3 reabierta; nuevas 12–16. |
+| 2026-11-23 | v0.10. A-11 decidida (ADR-040): el código se lleva a `castuo-agro-edge`. Sin ejecutar; condiciones previas registradas. |
 
 ## 13. Artefactos de referencia
 
@@ -303,13 +304,13 @@ reposicionamiento** y describen el proyecto con el encuadre antiguo:
    campo)**. `[POR CONFIRMAR]`
 2. **Idioma.** El README está en inglés; estos documentos, en español. Conviene decidir uno
    para el repositorio. `[POR DECIDIR]`
-3. **Encaje. `[ENCAJE RESUELTO en v0.6 · UBICACIÓN REABIERTA en v0.9]`** SUBER UAV es una fase
+3. **Encaje. `[ENCAJE RESUELTO en v0.6 · UBICACIÓN DECIDIDA en v0.10 (ADR-040), SIN EJECUTAR]`** SUBER UAV es una fase
    **exterior** a la arquitectura de CASTÚO-SYSTEM (ADR-031, D-11): despliegue, calendario y
    frontera propios, y entrega por paquete verificable. Eso sigue en pie. Lo que v0.6 daba por
    «mudanza pendiente, sin bloqueo» ya no es cierto: la decisión del 2026-09-21 declara
    canónico a `castuo-agro-edge` y deja este repositorio como extracción experimental (ADR-039,
    D-19), y el código solo existe en la rama de archivo. La mudanza **sí bloquea** la
-   validación: ver A-11 y la incoherencia 12. `[ABIERTA: decide el promotor]`
+   validación: ver A-11 y la incoherencia 12. `[DECIDIDA: ADR-040; mudanza pendiente]`
 4. **`owner_ref` y protección de datos.** Tipado como `uuid` para forzar una referencia
    seudonimizada, pero nada impide hoy que apunte a una tabla con datos personales. El análisis
    jurídico de qué puede referenciar, con qué base legal y con qué retención sigue abierto, y
@@ -347,7 +348,7 @@ reposicionamiento** y describen el proyecto con el encuadre antiguo:
    (rama `wip/uncommitted-work-snapshot-2026-09-03` y `origin/archive/suber-uav-snapshot`).
    `origin/main` (`7ffbc20`, 21 commits por delante de la base del snapshot) trae gobernanza y
    CI, sin SUBER UAV. Quien clone `main` no ve nada de lo descrito aquí. Verificado
-   2026-11-23. `[ABIERTA: depende de A-11]`
+   2026-11-23. `[ABIERTA: A-11 decidida en ADR-040; sigue así hasta ejecutar la mudanza]`
 13. **`SLICE01.md` declara 245 pruebas.** Cifra del slice 01, anterior a UMD-1; el recuento
    actual es 284. El documento describe un estado histórico y no se ha editado en v0.9.
    `[POR MARCAR COMO HISTÓRICO]`
