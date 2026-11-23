@@ -8,7 +8,7 @@ de sus treinta y seis módulos. Entrega su resultado como paquete verificable, n
 **Estado de la capacidad (README):** N2 – Prepared · objetivo N5 – Pilot
 **Estado del demostrador:** pre-prototipo, sin vuelos de ensayo.
 Núcleo de evidencia implementado, endurecido y probado con datos sintéticos.
-**Documento:** v0.11 · 2026-11-23
+**Documento:** v0.12 · 2026-11-23
 **Promotor:** CASTÚO-SYSTEM
 
 Este archivo es la fuente de verdad del proyecto entre sesiones. Los artefactos enlazados al
@@ -50,7 +50,7 @@ prohibida y su comprobación automática, está en `POSICIONAMIENTO_SUBER.md`, a
 |---|---|
 | Prototipo | No existe |
 | Núcleo de evidencia (inventario, detección, trazabilidad) | Implementado y endurecido; solo datos sintéticos |
-| Ordenación de unidades y contraste ciego (gate G2 en seco) | Implementado; **284 pruebas pasan en local contra PostgreSQL 16** (2026-11-23, Python 3.12.10, psycopg 3.2.3, rol `castuo_app` creado antes y acceso sin contraseña). Primera ejecución que consta desde v0.8. Sin CI: GitHub Actions no arranca por facturación |
+| Ordenación de unidades y contraste ciego (gate G2 en seco) | Implementado; **284 pruebas pasan en local contra PostgreSQL 16** (2026-11-23, Python 3.12.10, psycopg 3.2.3, rol `castuo_app` creado antes y acceso sin contraseña). Primera ejecución que consta desde v0.8. **Además, 284 pasadas en CI de GitHub** (`castuo-agro-edge#51`, flujo `SUBER UAV tests`, PostgreSQL 16); el CI sobre `main` de `castuo-agro-edge` (`a7ab478`) terminó en éxito. Datos sintéticos: no es una campaña real |
 | Capa de captura: misión, observación y reidentificación (G1 en seco) | **Implementada** (UMD-1); solo datos sintéticos |
 | API HTTP con autenticación por dispositivo | Implementada; provisional, sin rotación de credenciales |
 | Léxico controlado comprobado automáticamente | Implementado (13 patrones, 22 pruebas) |
@@ -95,7 +95,7 @@ decisión de diseño o hipótesis, salvo donde se indique lo contrario de forma 
 | D-16 | **Escalera de carga útil P0–P3**, registrada en cada misión (ADR-036) | No se compra sensor caro antes de cerrar el gate del peldaño anterior |
 | D-17 | **Ensayo en seco obligatorio** antes de cada gate de campo (ADR-037) | Perder una ventana del monte cuesta un año; el ensayo cuesta un guion |
 | D-18 | **Deuda de evidencia** registrada con dueño y gate de vencimiento (ADR-038) | Se puede hablar del proyecto sin sobreafirmar y sin quedarse mudo |
-| D-19 | **`castuo-agro-edge` es el repositorio canónico** del dominio; este repositorio es extracción experimental (ADR-039, decisión del promotor del 2026-09-21) | El código de SUBER UAV queda archivado y sin hogar con integración continua hasta completar la mudanza decidida en A-11 (ADR-040) |
+| D-19 | **`castuo-agro-edge` es el repositorio canónico** del dominio; este repositorio es extracción experimental (ADR-039, decisión del promotor del 2026-09-21) | El código de SUBER UAV queda archivado aquí; la mudanza decidida en A-11 (ADR-040) está ejecutada y el código tiene hogar con CI en `castuo-agro-edge` |
 
 ## 4. Arquitectura actual
 
@@ -160,7 +160,7 @@ más probable de este proyecto después de la frase prohibida del léxico.
 | A-08 | Escala de clases de calidad que se registra y su versión | F1 | `quality_assessment` |
 | A-09 | Titularidad y licencia del dato de monte | F0, jurídico | Pitch a industria, `forest_asset` |
 | A-10 | Forma de la captura de campo: aplicación nativa o web instalable, ambas offline | F1 | UMD-6, y con ella G3 |
-| A-11 | ~~Dónde vive y se valida el código de SUBER UAV~~ **Decidida 2026-11-23 (ADR-040): se lleva a `castuo-agro-edge`. En curso, no completada:** PR borrador `castuo-agro-edge#51` (`capabilities/suber-uav/`, mismos blobs que `b5f23f4`, sin `docs/`), sin fusionar. Condiciones: publicar en repositorio público, **cumplida**; revisión de secretos y datos, **hecha** (sin hallazgos; `docs/publicaciones/` queda fuera); PostgreSQL 16 en CI, **flujo escrito y no ejecutado** (Actions no arranca) | Antes de cualquier gate de campo | Todo gate con SEV: hasta fusionar el PR y ver CI verde no hay hogar con integración continua |
+| A-11 | ~~Dónde vive y se valida el código de SUBER UAV~~ **Decidida y ejecutada 2026-11-23 (ADR-040): el código está en `castuo-agro-edge`** (`capabilities/suber-uav/`, PR `castuo-agro-edge#51` fusionado como `a7ab478`, sin `docs/`). Fusionado con `--admin`, **sin aprobación de revisión** (la protección de `main` exigía 1; excepción del promotor). CI verde: 284 pruebas con PostgreSQL 16. Dependencias `fastapi` y `httpx` declaradas, que el origen no declaraba. **Pendiente:** los documentos siguen solo aquí, en la rama de archivo | Cerrada | Hay hogar con CI para el expediente de los gates. No cierra ningún gate de campo |
 
 A-05 se fija **antes** de mirar ningún dato. Fijarlo después es elegir el listón que uno acaba
 de saltar.
@@ -278,6 +278,7 @@ modelo sectorial y no depende de ningún tercero.
 | 2026-11-23 | v0.9. Contraste con el repositorio: conteos de soberanía y fortalezas corregidos (A8-1, A8-2), pruebas «recolectadas» y no «verdes», ADR-039, D-19, A-11. Incoherencia 3 reabierta; nuevas 12–16. |
 | 2026-11-23 | v0.10. A-11 decidida (ADR-040): el código se lleva a `castuo-agro-edge`. Sin ejecutar; condiciones previas registradas. |
 | 2026-11-23 | v0.11. 284 pruebas reejecutadas y verdes en local con PostgreSQL 16. Mudanza en curso: PR borrador `castuo-agro-edge#51`. Publicar aceptado por el promotor; `docs/publicaciones/` fuera. |
+| 2026-11-23 | v0.12. Mudanza ejecutada: `castuo-agro-edge#51` fusionado (`a7ab478`, con `--admin`, sin aprobación). 284 pruebas verdes en CI. A-11 cerrada. No cierra ningún gate de campo. |
 
 ## 13. Artefactos de referencia
 
@@ -305,13 +306,13 @@ reposicionamiento** y describen el proyecto con el encuadre antiguo:
    campo)**. `[POR CONFIRMAR]`
 2. **Idioma.** El README está en inglés; estos documentos, en español. Conviene decidir uno
    para el repositorio. `[POR DECIDIR]`
-3. **Encaje. `[ENCAJE RESUELTO en v0.6 · UBICACIÓN DECIDIDA en v0.10 (ADR-040), MUDANZA EN CURSO en v0.11]`** SUBER UAV es una fase
+3. **Encaje. `[ENCAJE RESUELTO en v0.6 · UBICACIÓN DECIDIDA en v0.10 (ADR-040), MUDANZA EJECUTADA en v0.12]`** SUBER UAV es una fase
    **exterior** a la arquitectura de CASTÚO-SYSTEM (ADR-031, D-11): despliegue, calendario y
    frontera propios, y entrega por paquete verificable. Eso sigue en pie. Lo que v0.6 daba por
    «mudanza pendiente, sin bloqueo» ya no es cierto: la decisión del 2026-09-21 declara
    canónico a `castuo-agro-edge` y deja este repositorio como extracción experimental (ADR-039,
    D-19), y el código solo existe en la rama de archivo. La mudanza **sí bloquea** la
-   validación: ver A-11 y la incoherencia 12. `[DECIDIDA: ADR-040; mudanza en curso, PR borrador castuo-agro-edge#51]`
+   validación: ver A-11 y la incoherencia 12. `[DECIDIDA Y EJECUTADA: ADR-040; código en castuo-agro-edge, PR #51, a7ab478]`
 4. **`owner_ref` y protección de datos.** Tipado como `uuid` para forzar una referencia
    seudonimizada, pero nada impide hoy que apunte a una tabla con datos personales. El análisis
    jurídico de qué puede referenciar, con qué base legal y con qué retención sigue abierto, y
@@ -349,7 +350,7 @@ reposicionamiento** y describen el proyecto con el encuadre antiguo:
    (rama `wip/uncommitted-work-snapshot-2026-09-03` y `origin/archive/suber-uav-snapshot`).
    `origin/main` (`7ffbc20`, 21 commits por delante de la base del snapshot) trae gobernanza y
    CI, sin SUBER UAV. Quien clone `main` no ve nada de lo descrito aquí. Verificado
-   2026-11-23. `[ABIERTA: el código está también en el PR borrador castuo-agro-edge#51, sin fusionar; sigue así hasta fusionarlo]`
+   2026-11-23. `[RESUELTA por ubicación en v0.12: el código vive ahora en main de castuo-agro-edge (capabilities/suber-uav). Este repositorio sigue sin él por diseño (ADR-039). Siguen solo aquí los documentos]`
 13. **`SLICE01.md` declara 245 pruebas.** Cifra del slice 01, anterior a UMD-1; el recuento
    actual es 284. El documento describe un estado histórico y no se ha editado en v0.9.
    `[POR MARCAR COMO HISTÓRICO]`

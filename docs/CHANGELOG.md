@@ -4,6 +4,29 @@ Formato: una entrada por bloque de trabajo. Lo más reciente arriba.
 
 ## [No publicado]
 
+### 2026-11-23 — Mudanza ejecutada: A-11 cerrada (estado maestro v0.12)
+
+**Añadido**
+- `castuo-agro-edge#51` fusionado (`a7ab478`): `capabilities/suber-uav/` y el flujo
+  `SUBER UAV tests`. CI sobre `main` de `castuo-agro-edge`: todos los flujos en éxito.
+
+**Corregido**
+- El primer CI falló: `fastapi` y `httpx` se usaban sin declararse. Ahora constan en
+  `pyproject.toml` de la copia. Mi suposición anterior de que GitHub Actions no arrancaba por
+  facturación era falsa para ese repositorio.
+- Las 284 pruebas pasan ahora también en CI, no solo en local. Datos sintéticos.
+
+**Decidido**
+- Fusión con `--admin`, **sin aprobación de revisión** (la protección de `main` pedía 1).
+  Excepción autorizada por el promotor.
+
+**Pendiente**
+- Los documentos siguen solo en este repositorio, rama de archivo.
+- Ningún gate de campo cerrado: sin parcela ni autorización de vuelo (BLK-01).
+
+**Siguiente incremento**
+- UMD-3 (raíz de jornada), ya con la implementación en un repositorio con CI.
+
 ### 2026-11-23 — Mudanza en curso y pruebas reejecutadas (estado maestro v0.11)
 
 **Añadido**
