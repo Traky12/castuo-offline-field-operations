@@ -618,3 +618,96 @@ de léxico atrapa las formulaciones más peligrosas pero no distingue matices de
 esta tabla se mantiene a mano y puede quedarse desactualizada.
 
 **Revisar.** En cada cierre de gate, junto con `FORTALEZAS.md`.
+
+## ADR-039 — El repositorio canónico de la capacidad offline-first es `castuo-agro-edge`; este repositorio es extracción experimental
+
+**Contexto.** ADR-031 declara SUBER UAV fase exterior a la arquitectura de CASTÚO-SYSTEM, pero
+la incoherencia 3 del estado maestro dejaba el código «en el repositorio de la capacidad por
+comodidad» y daba por pendiente una mudanza sin fecha. Entre tanto, la decisión de
+consolidación del ecosistema del 2026-09-21 (`castuo-system`, `docs/architecture/
+ECOSYSTEM-CONSOLIDATION-DECISIONS-2026-09-21.md`, apartado 2, ítems 1 y 2; registrada en
+`docs/ECOSYSTEM.md`) estableció que el canónico del dominio «offline field operations» es
+`castuo-agro-edge` y que este repositorio pasa a **extracción experimental**, con el commit
+`b5f23f4` (95 archivos, 10.958 líneas añadidas) archivado en `archive/suber-uav-snapshot` y
+**no fusionado a `main`**. El estado maestro v0.8 (2026-09-02) es anterior y no la recoge.
+Verificado el 2026-11-23: `HEAD` del snapshot = `origin/archive/suber-uav-snapshot` =
+`b5f23f4`; `origin/main` (`7ffbc20`) no contiene `docs/DECISIONES.md`, `src/castuo/` ni
+`migrations/`.
+
+**Decisión.** (1) `castuo-agro-edge` rige como repositorio canónico del dominio. (2) Este
+repositorio conserva el código de SUBER UAV solo en la rama de archivo, con estado
+`experiment`. (3) ADR-031 **no cambia**: la exterioridad es respecto de la arquitectura de
+CASTÚO-SYSTEM, no respecto de qué repositorio aloja el trabajo; este ADR aclara el hogar, no
+el encaje. (4) Se registra como decisión **abierta**, y no se resuelve aquí, dónde vive y se
+valida el código de SUBER UAV (A-11).
+
+**Consecuencias.** Hay una sola fuente por dominio en el ecosistema y se evita mantener dos
+repositorios con el mismo propósito. **Lo que cuesta:** el estado maestro, los ADR y las 284
+pruebas viven en un repositorio que ya no es el canónico y cuyo `main` no los contiene, de modo
+que el trabajo de validación no tiene hoy un hogar con integración continua. Además, `main` y
+el snapshot divergen desde `47d3af1`; restaurar uno sobre otro exigirá reconciliar 21 commits
+de gobernanza y de CI.
+
+**Reabre:** la incoherencia 3 del estado maestro (resuelta en v0.6 como encaje, reabierta en
+v0.9 como ubicación).
+
+**Revisar.** Cuando se decida A-11, o antes de intentar cualquier gate de campo, lo que ocurra
+primero. También si `castuo-agro-edge` deja de ser el canónico.
+
+## ADR-040 — El código de SUBER UAV se lleva a `castuo-agro-edge` (cierra A-11)
+
+**Estado:** decidida el 2026-11-23, **sin ejecutar**. **Quién decide:** el promotor delegó la
+decisión en sesión («Decide A-11 ahora»); la propuesta y su razonamiento son de Claude. El
+promotor puede revocarla.
+
+**Contexto.** ADR-039 declara canónico a `castuo-agro-edge` y deja este repositorio como
+extracción experimental, con el código solo en `archive/suber-uav-snapshot` (`b5f23f4`). A-11
+preguntaba dónde vive y se valida ese código: restaurarlo a `main` de este repositorio,
+mantenerlo archivado o llevarlo a otro. Verificado con `gh` el 2026-11-23: `castuo-agro-edge`
+es `PUBLIC`, no está archivado, `main` con último push 2026-11-18, y tiene `tests.yml`,
+`secret-scan.yml` y `.gitleaks.toml`.
+
+**Decisión.** El código de SUBER UAV (`src/castuo/`, `migrations/`, `tests/`, `scripts/`) se
+lleva a `castuo-agro-edge`, en un directorio propio de la capacidad y por PR; este repositorio
+conserva su rama de archivo como histórico. Los gates de campo `SUBER-G1…G3` se validan con la
+integración continua de ese repositorio. Se descartan: (a) restaurar a `main` aquí, porque
+contradice ADR-039 y exige reconciliar 21 commits con un repositorio no canónico; (b) mantenerlo
+archivado, porque deja sin hogar con CI justo lo que la validación necesita.
+
+**Condiciones antes de ejecutar** `[PENDIENTE]`
+1. El promotor confirma que publicar el código de SUBER UAV es aceptable: `castuo-agro-edge` es
+   público. Si no lo es, la alternativa es un repositorio privado, no volver a (a) o (b).
+2. Revisión previa de lo que se publicaría: sin datos reales ni referencias a titulares;
+   `owner_ref` es `uuid` seudonimizado, pero nada impide hoy que apunte a datos personales
+   (incoherencia 4).
+3. Las 284 pruebas necesitan PostgreSQL 16; `[POR CONFIRMAR]` que `tests.yml` de
+   `castuo-agro-edge` lo provee. Hoy GitHub Actions no arranca por facturación, así que no habría
+   CI aunque el flujo esté bien.
+
+**Estado de las condiciones (2026-11-23, actualizado en v0.11)**
+1. **Cumplida.** El promotor confirmó en sesión que publicar el código en `castuo-agro-edge`
+   (público) es aceptable.
+2. **Revisión hecha, con dos matices.** `gitleaks git` sobre `b5f23f4` (3 commits, ~586 KB):
+   sin fugas. Búsqueda de patrones de correo, DNI y teléfono en `src`, `tests`, `scripts`,
+   `migrations` y `docs/publicaciones`: sin coincidencias. No hay datos reales de campo: los
+   *fixtures* son sintéticos (`parcela_sintetica.png`, `vuelo_sintetico.json`).
+   Matices: (a) no es una revisión humana del contenido; (b) `docs/publicaciones/` (3 HTML:
+   dossier, protocolo, plan de crecimiento) es posicionamiento, no código; `[PENDIENTE]` decidir
+   si viaja a un repositorio público o se queda fuera de la mudanza. *Resuelto:* el promotor
+   decidió dejar `docs/publicaciones/` (y todo `docs/`) fuera.
+3. **Flujo escrito, no ejecutado.** *(Texto original: no cumplida.)* El `tests.yml` de `castuo-agro-edge` usa Python 3.12, no declara servicio
+   de PostgreSQL y solo ejecuta `tests/unit`. Las 284 pruebas de SUBER UAV, que necesitan
+   PostgreSQL 16, **no correrían** con él: hace falta un flujo nuevo con un servicio
+   `postgres:16`. Y GitHub Actions no arranca por facturación, así que no habría ejecución
+   aunque se escriba. Se escribió `suber-uav-tests.yml` con un servicio `postgres:16`, que crea
+   el rol `castuo_app` antes de las pruebas. En local las 284 pruebas **pasan** con ese montaje.
+   Hallazgo: `tests/conftest.py` usa `castuo_app` antes de que la migración 0006 lo cree, así
+   que en un clúster nuevo falla sin ese paso. Mudanza: PR borrador `castuo-agro-edge#51`.
+
+**Consecuencias.** Buenas: una sola fuente por dominio, y un hogar con CI y escaneo de
+secretos para el expediente de los gates. Malas: el trabajo de migración (reubicar rutas y
+reejecutar las 284 pruebas, que hoy están solo «recolectadas») y la dependencia de un
+repositorio público.
+
+**Revisar.** Al ejecutar la mudanza, si el promotor rechaza la condición 1, o si
+`castuo-agro-edge` deja de ser el canónico.

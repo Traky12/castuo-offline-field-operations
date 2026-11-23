@@ -8,7 +8,7 @@ de sus treinta y seis módulos. Entrega su resultado como paquete verificable, n
 **Estado de la capacidad (README):** N2 – Prepared · objetivo N5 – Pilot
 **Estado del demostrador:** pre-prototipo, sin vuelos de ensayo.
 Núcleo de evidencia implementado, endurecido y probado con datos sintéticos.
-**Documento:** v0.8 · 2026-09-02
+**Documento:** v0.11 · 2026-11-23
 **Promotor:** CASTÚO-SYSTEM
 
 Este archivo es la fuente de verdad del proyecto entre sesiones. Los artefactos enlazados al
@@ -50,18 +50,20 @@ prohibida y su comprobación automática, está en `POSICIONAMIENTO_SUBER.md`, a
 |---|---|
 | Prototipo | No existe |
 | Núcleo de evidencia (inventario, detección, trazabilidad) | Implementado y endurecido; solo datos sintéticos |
-| Ordenación de unidades y contraste ciego (gate G2 en seco) | Implementado; 284 pruebas verdes |
+| Ordenación de unidades y contraste ciego (gate G2 en seco) | Implementado; **284 pruebas pasan en local contra PostgreSQL 16** (2026-11-23, Python 3.12.10, psycopg 3.2.3, rol `castuo_app` creado antes y acceso sin contraseña). Primera ejecución que consta desde v0.8. Sin CI: GitHub Actions no arranca por facturación |
 | Capa de captura: misión, observación y reidentificación (G1 en seco) | **Implementada** (UMD-1); solo datos sintéticos |
 | API HTTP con autenticación por dispositivo | Implementada; provisional, sin rotación de credenciales |
 | Léxico controlado comprobado automáticamente | Implementado (13 patrones, 22 pruebas) |
-| Soberanía del dato (S-1…S-6) | 3 propiedades probadas, 2 sin auditar, 1 a medias |
-| Catálogo de fortalezas con nivel de evidencia | 10 del preprototipo (8 en EQ3) · 7 comprometidas |
+| Soberanía del dato (S-1…S-6) | 2 hechas (S-2, S-4) · 3 decisión de diseño sin demostrar (S-1 sin medir, S-3 sin auditar, S-5 con la autoridad sin elegir) · 1 parcial (S-6). Partición de `SOBERANIA_DEL_DATO.md` §2 |
+| Catálogo de fortalezas con nivel de evidencia | 11 del preprototipo (9 en EQ3: F-01…F-08 y F-10b; 2 decisión de diseño: F-09, F-10) · 7 comprometidas |
 | Protocolo de integridad transversal | Redactado; 11 de 14 criterios con prueba automatizada |
 | Catálogo de eventos E-01…E-11 | Semántico, no coercitivo: 3 de 11 implementados |
 | Raíz de jornada sobre las cadenas de dispositivo | **No existe**; hace falta antes del anclaje real (UMD-3) |
 | Modelo de dominio sectorial (13 entidades) | Documentado; 1 construida, 4 parciales, 8 ausentes |
 | Anclaje RFC 3161 contra autoridad real | No probado — solo tokens sintéticos DER |
 | Banco de sensores | En montaje |
+| Código y documentos en `main` de este repositorio | **Ninguno.** Viven solo en el commit `b5f23f4` (rama `wip/uncommitted-work-snapshot-2026-09-03` y `origin/archive/suber-uav-snapshot`). `origin/main` (`7ffbc20`) tiene andamiaje de gobernanza y CI, sin SUBER UAV |
+| Repositorio canónico del dominio | `castuo-agro-edge`; este repositorio es extracción experimental (ADR-039) |
 | Vuelos de ensayo | Ninguno |
 | Datos de campo validados | Ninguno |
 | Autorización de vuelo | Ninguna |
@@ -93,6 +95,7 @@ decisión de diseño o hipótesis, salvo donde se indique lo contrario de forma 
 | D-16 | **Escalera de carga útil P0–P3**, registrada en cada misión (ADR-036) | No se compra sensor caro antes de cerrar el gate del peldaño anterior |
 | D-17 | **Ensayo en seco obligatorio** antes de cada gate de campo (ADR-037) | Perder una ventana del monte cuesta un año; el ensayo cuesta un guion |
 | D-18 | **Deuda de evidencia** registrada con dueño y gate de vencimiento (ADR-038) | Se puede hablar del proyecto sin sobreafirmar y sin quedarse mudo |
+| D-19 | **`castuo-agro-edge` es el repositorio canónico** del dominio; este repositorio es extracción experimental (ADR-039, decisión del promotor del 2026-09-21) | El código de SUBER UAV queda archivado y sin hogar con integración continua hasta completar la mudanza decidida en A-11 (ADR-040) |
 
 ## 4. Arquitectura actual
 
@@ -157,6 +160,7 @@ más probable de este proyecto después de la frase prohibida del léxico.
 | A-08 | Escala de clases de calidad que se registra y su versión | F1 | `quality_assessment` |
 | A-09 | Titularidad y licencia del dato de monte | F0, jurídico | Pitch a industria, `forest_asset` |
 | A-10 | Forma de la captura de campo: aplicación nativa o web instalable, ambas offline | F1 | UMD-6, y con ella G3 |
+| A-11 | ~~Dónde vive y se valida el código de SUBER UAV~~ **Decidida 2026-11-23 (ADR-040): se lleva a `castuo-agro-edge`. En curso, no completada:** PR borrador `castuo-agro-edge#51` (`capabilities/suber-uav/`, mismos blobs que `b5f23f4`, sin `docs/`), sin fusionar. Condiciones: publicar en repositorio público, **cumplida**; revisión de secretos y datos, **hecha** (sin hallazgos; `docs/publicaciones/` queda fuera); PostgreSQL 16 en CI, **flujo escrito y no ejecutado** (Actions no arranca) | Antes de cualquier gate de campo | Todo gate con SEV: hasta fusionar el PR y ver CI verde no hay hogar con integración continua |
 
 A-05 se fija **antes** de mirar ningún dato. Fijarlo después es elegir el listón que uno acaba
 de saltar.
@@ -224,9 +228,14 @@ las que el incremento en curso necesite · cualquier modelo de correlación mont
 
 ## 11. Incremento en curso
 
+**Contraste y reconciliación documental (2026-11-23) — COMPLETADA.** Contraste del estado
+maestro con el repositorio real: tres correcciones de conteo, ADR-039, incoherencia 3
+reabierta y cinco incoherencias nuevas (12–16). No toca código ni pruebas. **Bloquea cualquier
+gate de campo hasta decidir A-11.**
+
 **UMD-1 · capa de captura — COMPLETADA.** Misión de vuelo, observación separada de la
 detección, reidentificación entre misiones y ensayo en seco del gate G1. Cierra la
-incoherencia 6. ADR-035…ADR-038 y `PLAN_CRECIMIENTO.md`. 284 pruebas verdes.
+incoherencia 6. ADR-035…ADR-038 y `PLAN_CRECIMIENTO.md`. 284 pruebas (verdes según v0.8).
 
 **Protocolo de integridad transversal — COMPLETADO.** Estándar único de inmutabilidad y
 trazabilidad, con cuatro estados por afirmación, bloque de alcance, tabla de riesgos, tabla de
@@ -266,6 +275,9 @@ modelo sectorial y no depende de ningún tercero.
 | 2026-09-02 | Encaje como fase exterior y soberanía del dato desglosada. Catálogo de fortalezas por nivel de evidencia. ADR-031…ADR-033. D-11…D-13. Incoherencia 3 resuelta. |
 | 2026-09-02 | Protocolo de integridad transversal (SUBER UAV + SENDA). ADR-034, D-14, criterio 12. Incoherencias 9–11. |
 | 2026-09-02 | Plan de crecimiento y UMD-1: misión, observación, reidentificación, G1 en seco. ADR-035…ADR-038. D-15…D-18, A-10, criterios 13–14. Incoherencia 6 cerrada. |
+| 2026-11-23 | v0.9. Contraste con el repositorio: conteos de soberanía y fortalezas corregidos (A8-1, A8-2), pruebas «recolectadas» y no «verdes», ADR-039, D-19, A-11. Incoherencia 3 reabierta; nuevas 12–16. |
+| 2026-11-23 | v0.10. A-11 decidida (ADR-040): el código se lleva a `castuo-agro-edge`. Sin ejecutar; condiciones previas registradas. |
+| 2026-11-23 | v0.11. 284 pruebas reejecutadas y verdes en local con PostgreSQL 16. Mudanza en curso: PR borrador `castuo-agro-edge#51`. Publicar aceptado por el promotor; `docs/publicaciones/` fuera. |
 
 ## 13. Artefactos de referencia
 
@@ -293,11 +305,13 @@ reposicionamiento** y describen el proyecto con el encuadre antiguo:
    campo)**. `[POR CONFIRMAR]`
 2. **Idioma.** El README está en inglés; estos documentos, en español. Conviene decidir uno
    para el repositorio. `[POR DECIDIR]`
-3. **Encaje. `[RESUELTA en v0.6]`** SUBER UAV es una fase **exterior** a la arquitectura de
-   CASTÚO-SYSTEM (ADR-031, D-11): despliegue, calendario y frontera propios, y entrega por
-   paquete verificable. Sigue viviendo en el repositorio de la capacidad por comodidad, no por
-   encaje; la mudanza a repositorio propio, con el renombrado que ADR-025 aplaza, se hace cuando
-   convenga y ya no bloquea nada. `[MUDANZA PENDIENTE, SIN BLOQUEO]`
+3. **Encaje. `[ENCAJE RESUELTO en v0.6 · UBICACIÓN DECIDIDA en v0.10 (ADR-040), MUDANZA EN CURSO en v0.11]`** SUBER UAV es una fase
+   **exterior** a la arquitectura de CASTÚO-SYSTEM (ADR-031, D-11): despliegue, calendario y
+   frontera propios, y entrega por paquete verificable. Eso sigue en pie. Lo que v0.6 daba por
+   «mudanza pendiente, sin bloqueo» ya no es cierto: la decisión del 2026-09-21 declara
+   canónico a `castuo-agro-edge` y deja este repositorio como extracción experimental (ADR-039,
+   D-19), y el código solo existe en la rama de archivo. La mudanza **sí bloquea** la
+   validación: ver A-11 y la incoherencia 12. `[DECIDIDA: ADR-040; mudanza en curso, PR borrador castuo-agro-edge#51]`
 4. **`owner_ref` y protección de datos.** Tipado como `uuid` para forzar una referencia
    seudonimizada, pero nada impide hoy que apunte a una tabla con datos personales. El análisis
    jurídico de qué puede referenciar, con qué base legal y con qué retención sigue abierto, y
@@ -330,3 +344,27 @@ reposicionamiento** y describen el proyecto con el encuadre antiguo:
 11. **El protocolo deja fuera al propietario de las tablas y al superusuario.** Las capas 1 y 2 no
    alcanzan a quien tenga acceso administrativo directo. Reducir esa superficie es plan de
    despliegue, no de esquema. `[PENDIENTE: endurecimiento operativo]`
+12. **El estado declarado describe un proyecto que `main` no contiene.** Este documento, los
+   ADR, las migraciones, `src/castuo/` y las 284 pruebas existen solo en el commit `b5f23f4`
+   (rama `wip/uncommitted-work-snapshot-2026-09-03` y `origin/archive/suber-uav-snapshot`).
+   `origin/main` (`7ffbc20`, 21 commits por delante de la base del snapshot) trae gobernanza y
+   CI, sin SUBER UAV. Quien clone `main` no ve nada de lo descrito aquí. Verificado
+   2026-11-23. `[ABIERTA: el código está también en el PR borrador castuo-agro-edge#51, sin fusionar; sigue así hasta fusionarlo]`
+13. **`SLICE01.md` declara 245 pruebas.** Cifra del slice 01, anterior a UMD-1; el recuento
+   actual es 284. El documento describe un estado histórico y no se ha editado en v0.9.
+   `[POR MARCAR COMO HISTÓRICO]`
+14. **Dos vocabularios de gate.** En este repositorio G1, G2 y G3 son captura repetible,
+   concordancia sobre umbral y campaña registrada. En `castuo-system/gates/`, G1–G4 son
+   procedencia, integridad y seguridad, dato real de extremo a extremo, y cumplimiento y
+   operación. Comparten nombre y no significado; un SEV de «G3» es ambiguo sin decir de cuál.
+   Es la incoherencia 1 (escala N) en otra forma. `[POR DECIDIR: mapa de correspondencia
+   propuesto en el repositorio de gobernanza, sin aplicar]`
+15. **La misma propiedad con dos niveles.** «La ordenación no llama a ningún servicio de
+   terceros» figura como **hecho** en `SOBERANIA_DEL_DATO.md` (S-2) y como **decisión de
+   diseño** en `FORTALEZAS.md` (F-10). Ambos documentos no pueden estar bien a la vez.
+   `[POR CONFIRMAR]`
+16. **El calendario no ha avanzado con el estado.** El apartado 8 sitúa el cierre de F0 en
+   sep–oct 2026 (protocolo firmado, parcela comprometida, respuesta de Trazalia, acuerdo A-06),
+   y el apartado 2 sigue declarando sin parcela, sin acuerdo y sin autorización de vuelo a
+   2026-11-23. F1 (G1) abre en nov 2026. Sin replanificar, el calendario del monte, que ordena
+   las fases (D-06), se desincroniza. `[POR REPLANIFICAR: decide el promotor]`
