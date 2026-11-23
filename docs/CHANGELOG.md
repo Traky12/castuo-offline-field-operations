@@ -4,6 +4,30 @@ Formato: una entrada por bloque de trabajo. Lo más reciente arriba.
 
 ## [No publicado]
 
+### 2026-11-23 — Mudanza en curso y pruebas reejecutadas (estado maestro v0.11)
+
+**Añadido**
+- PR borrador `castuo-agro-edge#51`: `capabilities/suber-uav/` (`src`, `tests`, `migrations`,
+  `scripts`, mismos blobs que `b5f23f4`) y un flujo de CI con `postgres:16`. Sin `docs/`.
+
+**Decidido**
+- El promotor acepta publicar el código en `castuo-agro-edge` y deja `docs/publicaciones/` fuera.
+
+**Corregido**
+- «284 pruebas recolectadas, no reejecutadas» pasa a **284 pruebas pasan en local** con
+  PostgreSQL 16. Es la única ejecución que consta desde v0.8 y no hay CI que la respalde.
+- `docker-compose.test.yml`: la contraseña literal incumplía la regla de secretos de
+  `castuo-agro-edge` y no funcionaba con `castuo_app`; en el PR pasa a acceso sin contraseña.
+  Este repositorio no se ha tocado.
+
+**Pendiente**
+- Fusionar `castuo-agro-edge#51` y ver el flujo de CI verde: no se ha ejecutado nunca.
+- `tests/conftest.py` usa `castuo_app` antes de que la migración 0006 lo cree; falla en un
+  clúster nuevo. El PR lo resuelve en el flujo, no en el código.
+
+**Siguiente incremento**
+- Fusionar la mudanza y, con ella, UMD-3 (raíz de jornada).
+
 ### 2026-11-23 — A-11 decidida (ADR-040)
 
 **Decidido**

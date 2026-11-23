@@ -684,7 +684,7 @@ archivado, porque deja sin hogar con CI justo lo que la validación necesita.
    `castuo-agro-edge` lo provee. Hoy GitHub Actions no arranca por facturación, así que no habría
    CI aunque el flujo esté bien.
 
-**Estado de las condiciones (2026-11-23)**
+**Estado de las condiciones (2026-11-23, actualizado en v0.11)**
 1. **Cumplida.** El promotor confirmó en sesión que publicar el código en `castuo-agro-edge`
    (público) es aceptable.
 2. **Revisión hecha, con dos matices.** `gitleaks git` sobre `b5f23f4` (3 commits, ~586 KB):
@@ -693,12 +693,16 @@ archivado, porque deja sin hogar con CI justo lo que la validación necesita.
    *fixtures* son sintéticos (`parcela_sintetica.png`, `vuelo_sintetico.json`).
    Matices: (a) no es una revisión humana del contenido; (b) `docs/publicaciones/` (3 HTML:
    dossier, protocolo, plan de crecimiento) es posicionamiento, no código; `[PENDIENTE]` decidir
-   si viaja a un repositorio público o se queda fuera de la mudanza.
-3. **No cumplida.** El `tests.yml` de `castuo-agro-edge` usa Python 3.12, no declara servicio
+   si viaja a un repositorio público o se queda fuera de la mudanza. *Resuelto:* el promotor
+   decidió dejar `docs/publicaciones/` (y todo `docs/`) fuera.
+3. **Flujo escrito, no ejecutado.** *(Texto original: no cumplida.)* El `tests.yml` de `castuo-agro-edge` usa Python 3.12, no declara servicio
    de PostgreSQL y solo ejecuta `tests/unit`. Las 284 pruebas de SUBER UAV, que necesitan
    PostgreSQL 16, **no correrían** con él: hace falta un flujo nuevo con un servicio
    `postgres:16`. Y GitHub Actions no arranca por facturación, así que no habría ejecución
-   aunque se escriba.
+   aunque se escriba. Se escribió `suber-uav-tests.yml` con un servicio `postgres:16`, que crea
+   el rol `castuo_app` antes de las pruebas. En local las 284 pruebas **pasan** con ese montaje.
+   Hallazgo: `tests/conftest.py` usa `castuo_app` antes de que la migración 0006 lo cree, así
+   que en un clúster nuevo falla sin ese paso. Mudanza: PR borrador `castuo-agro-edge#51`.
 
 **Consecuencias.** Buenas: una sola fuente por dominio, y un hogar con CI y escaneo de
 secretos para el expediente de los gates. Malas: el trabajo de migración (reubicar rutas y
